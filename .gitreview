@@ -1,0 +1,5 @@
+[gerrit]
+host=git.wanghongxu.cn
+port=29418
+project=swamp.git
+defaultbranch=master
