@@ -1,0 +1,4 @@
+.idea
+venv
+swamp/app.log
+swamp/sqlite.db
