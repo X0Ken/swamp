@@ -38,7 +38,6 @@ class Window(QtGui.QDialog):
         hbox.addWidget(cancel_btn)
 
         vbox = QtGui.QVBoxLayout()
-        vbox.addStretch(1)
         vbox.addWidget(list_widget)
         vbox.addLayout(hbox)
 
@@ -57,7 +56,7 @@ class Window(QtGui.QDialog):
 
     def select_clicked(self):
         logger.debug("DeviceSelect select button clicked")
-        self.parent().device = "V7000"
+        self.parent().device = self.list_widget.currentItem().device
         self.close()
 
     def create_clicked(self):

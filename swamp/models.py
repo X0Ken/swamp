@@ -1,4 +1,5 @@
 from datetime import datetime
+import json
 
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import Column, Integer, String, ForeignKey, DateTime
@@ -31,22 +32,26 @@ class DB(Singleton):
         return self._engine
 
 
-def get_session():
-    db = DB()
-    session = Session(db.engine)
-    return session
-
-
 class DBMixin(object):
+    _session = None
+
+    @property
+    def session(self):
+        if self._session:
+            return self._session
+        else:
+            self._session = Session(DB().engine)
+            return self._session
 
     def save(self):
-        session = get_session()
+        session = self.session
         session.add(self)
         session.commit()
+        session.refresh(self)
 
     @classmethod
     def get_all(cls):
-        session = get_session()
+        session = Session(DB().engine)
         return session.query(cls).all()
 
 
@@ -101,6 +106,6 @@ class CheckInfo(Base, DBMixin):
             data = adsys.get_data()
         else:
             raise exception.DataSourceGetError
-        info = cls(device_id=device_id, data=data)
+        info = cls(device_id=device_id, data=json.dumps(data))
         info.save()
         return info

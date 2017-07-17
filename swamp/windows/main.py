@@ -43,6 +43,7 @@ class MainWindow(QtGui.QMainWindow):
 
         layout = QtGui.QHBoxLayout()
         layout.addWidget(self.canvas)
+        layout.addStretch(1)
         layout.addLayout(btn_layout)
 
         self.setCentralWidget(QtGui.QWidget())
@@ -83,4 +84,4 @@ class MainWindow(QtGui.QMainWindow):
     @device.setter
     def device(self, value):
         self._device = value
-        self.statusBar().showMessage("Device: %s" % self._device)
+        self.statusBar().showMessage("Device: %s" % value.name)
