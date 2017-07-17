@@ -17,6 +17,8 @@ class Window(QtGui.QDialog):
     def __init__(self, parent=None):
         super(Window, self).__init__(parent)
 
+        self.setWindowTitle("Device Select")
+
         list_widget = QtGui.QListWidget()
         self.list_widget = list_widget
 
@@ -41,9 +43,7 @@ class Window(QtGui.QDialog):
         vbox.addLayout(hbox)
 
         self.reload_device()
-
         self.setLayout(vbox)
-        self.resize(300, 150)
 
     def reload_device(self):
         logger.debug("Reload device list")
@@ -51,7 +51,7 @@ class Window(QtGui.QDialog):
         devices = Device.get_all()
         for device in devices:
             dev = DeviceListWidgetItem()
-            dev.setText(QtCore.QString(device.name))
+            dev.setText(device.name)
             dev.device = device
             self.list_widget.addItem(dev)
 
@@ -59,7 +59,6 @@ class Window(QtGui.QDialog):
         logger.debug("DeviceSelect select button clicked")
         self.parent().device = "V7000"
         self.close()
-        self.reload_device()
 
     def create_clicked(self):
         logger.debug("create new button clicked")

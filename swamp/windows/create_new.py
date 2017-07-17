@@ -12,6 +12,8 @@ class Window(QtGui.QDialog):
     def __init__(self, parent=None):
         super(Window, self).__init__(parent)
 
+        self.setWindowTitle("Create New Device")
+
         grid = QtGui.QGridLayout()
 
         name_label = QtGui.QLabel("name:")
@@ -32,16 +34,15 @@ class Window(QtGui.QDialog):
         hbox.addWidget(cancel_btn)
 
         vbox = QtGui.QVBoxLayout()
-        vbox.addStretch(1)
         vbox.addLayout(grid)
         vbox.addLayout(hbox)
 
         self.setLayout(vbox)
-        self.resize(300, 150)
 
     def select_clicked(self):
         logger.debug("DeviceSelect select button clicked")
         name = unicode(self.name.text())
         device = models.Device(name)
         device.save()
+        self.parent().reload_device()
         self.close()

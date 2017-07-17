@@ -19,26 +19,26 @@ class MainWindow(QtGui.QMainWindow):
 
     def __init__(self, parent=None):
         super(MainWindow, self).__init__(parent)
-
+        self.setWindowTitle("Device Detail")
         self.figure = plt.figure()
         self.canvas = FigureCanvas(self.figure)
 
+        btn_layout = QtGui.QVBoxLayout()
+
         select_btn = QtGui.QPushButton('Select Device')
         select_btn.clicked.connect(self.select_btn_click)
+        btn_layout.addWidget(select_btn)
 
         check_btn = QtGui.QPushButton('Check Device')
         check_btn.clicked.connect(self.check_btn_click)
+        btn_layout.addWidget(check_btn)
 
         history_btn = QtGui.QPushButton('Historical Data')
         history_btn.clicked.connect(self.history_btn_click)
+        btn_layout.addWidget(history_btn)
 
         exit_btn = QtGui.QPushButton('Exit')
         exit_btn.clicked.connect(self.close)
-
-        btn_layout = QtGui.QVBoxLayout()
-        btn_layout.addWidget(select_btn)
-        btn_layout.addWidget(check_btn)
-        btn_layout.addWidget(history_btn)
         btn_layout.addWidget(exit_btn)
 
         layout = QtGui.QHBoxLayout()
