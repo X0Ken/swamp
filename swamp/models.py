@@ -109,3 +109,8 @@ class CheckInfo(Base, DBMixin):
         info = cls(device_id=device_id, data=json.dumps(data))
         info.save()
         return info
+
+    @classmethod
+    def get_all_by_device(cls, device_id):
+        session = Session(DB().engine)
+        return session.query(cls).filter_by(device_id=device_id).all()

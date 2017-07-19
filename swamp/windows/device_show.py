@@ -84,6 +84,25 @@ class MainWindow(QtGui.QMainWindow):
 
     def history_btn_click(self):
         logger.debug("history_btn_click")
+        if not self._device:
+            QMessageBox.warning(
+                self, 'Message', "You need to select device!",
+                QMessageBox.Yes, QMessageBox.Yes)
+            return
+        try:
+            infos = models.CheckInfo.get_all_by_device(self._device.id)
+            self.figure.clear()
+            self.canvas.draw()
+            for info in infos:
+                ax = self.figure.add_subplot(111)
+                ax.hold(True)
+                ax.plot(json.loads(info.data), '.-')
+                self.canvas.draw()
+        except exception.DataSourceGetError:
+            QMessageBox.warning(
+                self, 'Message', "Data source error",
+                QMessageBox.Yes, QMessageBox.Yes)
+            return
 
     def check_btn_click(self):
         logger.debug("check_btn_click")
@@ -115,4 +134,6 @@ class MainWindow(QtGui.QMainWindow):
     def device(self, value):
         self._device = value
         self.device_name.setText(value.name)
+        self.figure.clear()
+        self.canvas.draw()
         self.statusBar().showMessage("Device: %s" % value.name)
