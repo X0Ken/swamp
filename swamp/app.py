@@ -4,7 +4,7 @@ from PyQt4 import QtGui
 
 from swamp import log
 from swamp.models import DB
-from swamp.windows.main import MainWindow
+from swamp.windows.device_show import MainWindow
 
 logger = log.get_logger()
 

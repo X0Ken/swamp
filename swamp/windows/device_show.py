@@ -64,6 +64,12 @@ class MainWindow(QtGui.QMainWindow):
     def check_btn_click(self):
         logger.debug("check_btn_click")
 
+        if not self._device:
+            QMessageBox.warning(
+                self, 'Message', "You need to select device!",
+                QMessageBox.Yes, QMessageBox.Yes)
+            return
+
         try:
             info = models.CheckInfo.get_new(self._device.id)
         except exception.DataSourceGetError:
