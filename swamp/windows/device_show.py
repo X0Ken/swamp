@@ -92,7 +92,6 @@ class MainWindow(QtGui.QMainWindow):
         try:
             infos = models.CheckInfo.get_all_by_device(self._device.id)
             self.figure.clear()
-            self.canvas.draw()
             ax = self.figure.add_subplot(111)
             for info in infos:
                 ax.plot(json.loads(info.data), '.-')
