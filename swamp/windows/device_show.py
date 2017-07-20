@@ -93,11 +93,10 @@ class MainWindow(QtGui.QMainWindow):
             infos = models.CheckInfo.get_all_by_device(self._device.id)
             self.figure.clear()
             self.canvas.draw()
+            ax = self.figure.add_subplot(111)
             for info in infos:
-                ax = self.figure.add_subplot(111)
-                ax.hold(True)
                 ax.plot(json.loads(info.data), '.-')
-                self.canvas.draw()
+            self.canvas.draw()
         except exception.DataSourceGetError:
             QMessageBox.warning(
                 self, 'Message', "Data source error",
