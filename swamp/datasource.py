@@ -5,6 +5,7 @@ import log
 
 logger = log.get_logger()
 
+
 class ADSourceBase(object):
     def test(self):
         return False
@@ -20,8 +21,8 @@ class FakeADSource(ADSourceBase):
 
     def get_data(self):
         logger.info("FakeADSource get data")
-        high = random.randrange(25, 50)
-        return [math.sin(math.pi / 500) * i * high for i in xrange(5000)]
+        high = random.randrange(80, 150)
+        return [math.sin(math.pi / 1000 * i) * high for i in xrange(500)]
 
 
 def get_ad_source():
