@@ -5,6 +5,9 @@ from PyQt4 import QtGui, QtCore
 from PyQt4.QtGui import QMessageBox
 from matplotlib.backends.backend_qt4agg import FigureCanvasQTAgg as \
     FigureCanvas
+from matplotlib.backends.backend_qt4agg import NavigationToolbar2QT as \
+    NavigationToolbar
+
 
 from swamp.windows.device_select import Window as SelectWindow
 from swamp import log
@@ -22,6 +25,7 @@ class MainWindow(QtGui.QMainWindow):
         self.setWindowTitle("Device Detail")
         self.figure = plt.figure()
         self.canvas = FigureCanvas(self.figure)
+        self.toolbar = NavigationToolbar(self.canvas, self)
 
         # label grid
         label_grid = QtGui.QGridLayout()
@@ -59,11 +63,14 @@ class MainWindow(QtGui.QMainWindow):
         right_layout.addStretch(1)
         right_layout.addLayout(btn_grid)
 
+        # left layout
+        left_layout = QtGui.QVBoxLayout()
+        left_layout.addWidget(self.toolbar)
+        left_layout.addWidget(self.canvas)
+
         # window layout
         layout = QtGui.QHBoxLayout()
-        layout.addStretch(2)
-        layout.addWidget(self.canvas)
-        layout.addStretch(1)
+        layout.addLayout(left_layout)
         layout.addLayout(right_layout)
 
         self.setCentralWidget(QtGui.QWidget())
@@ -83,9 +90,12 @@ class MainWindow(QtGui.QMainWindow):
         try:
             infos = models.CheckInfo.get_all_by_device(self._device.id)
             self.figure.clear()
-            ax = self.figure.add_subplot(111)
+            self.ax = self.figure.add_subplot(111)
             for info in infos:
-                ax.plot(json.loads(info.data), '.-', label='fsdf')
+                self.ax.plot(json.loads(info.data), '.-',
+                             label=str(info.created_at)[:16])
+            self.ax.legend(bbox_to_anchor=(0.02, 0.98), loc=2,
+                           borderaxespad=0.)
             self.canvas.draw()
         except exception.DataSourceGetError:
             QMessageBox.warning(
@@ -102,17 +112,14 @@ class MainWindow(QtGui.QMainWindow):
             return
 
         try:
-            info = models.CheckInfo.get_new(self._device.id)
+            models.CheckInfo.get_new(self._device.id)
         except exception.DataSourceGetError:
             QMessageBox.warning(
                 self, 'Message', "Data source error",
                 QMessageBox.Yes, QMessageBox.Yes)
             return
 
-        ax = self.figure.add_subplot(111)
-        ax.hold(True)
-        ax.plot(json.loads(info.data), '.-')
-        self.canvas.draw()
+        self.load_all_data()
 
     @property
     def device(self):

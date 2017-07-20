@@ -22,19 +22,23 @@ class Window(QtGui.QDialog):
         list_widget = QtGui.QListWidget()
         self.list_widget = list_widget
 
-        create_btn = QtGui.QPushButton('Create')
-        create_btn.clicked.connect(self.create_clicked)
-
         select_btn = QtGui.QPushButton('Select')
         select_btn.clicked.connect(self.select_clicked)
+
+        delete_btn = QtGui.QPushButton('Delete')
+        delete_btn.clicked.connect(self.delete_clicked)
+
+        create_btn = QtGui.QPushButton('Create')
+        create_btn.clicked.connect(self.create_clicked)
 
         cancel_btn = QtGui.QPushButton('Cancel')
         cancel_btn.clicked.connect(self.close)
 
         hbox = QtGui.QHBoxLayout()
         hbox.addStretch(1)
-        hbox.addWidget(create_btn)
         hbox.addWidget(select_btn)
+        hbox.addWidget(create_btn)
+        hbox.addWidget(delete_btn)
         hbox.addWidget(cancel_btn)
 
         vbox = QtGui.QVBoxLayout()
@@ -63,3 +67,9 @@ class Window(QtGui.QDialog):
         logger.debug("create new button clicked")
         create = CreateWindow(self)
         create.show()
+
+    def delete_clicked(self):
+        logger.debug("Delete device button clicked")
+        device = self.list_widget.currentItem().device
+        device.destory()
+        self.reload_device()

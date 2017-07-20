@@ -16,6 +16,7 @@ Base = declarative_base()
 
 class DB(Singleton):
     _engine = None
+    _session = None
 
     def __init__(self):
         if not self._engine:
@@ -31,28 +32,31 @@ class DB(Singleton):
     def engine(self):
         return self._engine
 
-
-class DBMixin(object):
-    _session = None
-
     @property
     def session(self):
         if self._session:
             return self._session
         else:
-            self._session = Session(DB().engine)
+            self._session = Session(self._engine)
             return self._session
 
+
+class DBMixin(object):
     def save(self):
-        session = self.session
+        session = DB().session
         session.add(self)
         session.commit()
         session.refresh(self)
 
     @classmethod
     def get_all(cls):
-        session = Session(DB().engine)
+        session = DB().session
         return session.query(cls).all()
+
+    def destory(self):
+        session = DB().session
+        session.delete(self)
+        session.commit()
 
 
 class Device(Base, DBMixin):
