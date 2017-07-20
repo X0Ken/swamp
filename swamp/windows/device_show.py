@@ -44,13 +44,9 @@ class MainWindow(QtGui.QMainWindow):
         select_btn.clicked.connect(self.select_btn_click)
         btn_grid.addWidget(select_btn, 0, 0)
 
-        check_btn = QtGui.QPushButton('Check Device')
+        check_btn = QtGui.QPushButton('Get New Device Info')
         check_btn.clicked.connect(self.check_btn_click)
         btn_grid.addWidget(check_btn, 0, 1)
-
-        history_btn = QtGui.QPushButton('Historical Data')
-        history_btn.clicked.connect(self.history_btn_click)
-        btn_grid.addWidget(history_btn, 1, 0)
 
         exit_btn = QtGui.QPushButton('Exit')
         exit_btn.clicked.connect(self.close)
@@ -82,25 +78,19 @@ class MainWindow(QtGui.QMainWindow):
         select_device = SelectWindow(self)
         select_device.show()
 
-    def history_btn_click(self):
-        logger.debug("history_btn_click")
-        if not self._device:
-            QMessageBox.warning(
-                self, 'Message', "You need to select device!",
-                QMessageBox.Yes, QMessageBox.Yes)
-            return
+    def load_all_data(self):
+        logger.debug("load device history data.")
         try:
             infos = models.CheckInfo.get_all_by_device(self._device.id)
             self.figure.clear()
             ax = self.figure.add_subplot(111)
             for info in infos:
-                ax.plot(json.loads(info.data), '.-')
+                ax.plot(json.loads(info.data), '.-', label='fsdf')
             self.canvas.draw()
         except exception.DataSourceGetError:
             QMessageBox.warning(
                 self, 'Message', "Data source error",
                 QMessageBox.Yes, QMessageBox.Yes)
-            return
 
     def check_btn_click(self):
         logger.debug("check_btn_click")
@@ -132,6 +122,5 @@ class MainWindow(QtGui.QMainWindow):
     def device(self, value):
         self._device = value
         self.device_name.setText(value.name)
-        self.figure.clear()
-        self.canvas.draw()
+        self.load_all_data()
         self.statusBar().showMessage("Device: %s" % value.name)
