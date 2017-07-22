@@ -1,16 +1,16 @@
-from datetime import datetime
 import json
+from datetime import datetime
 
-from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import Column, Integer, String, ForeignKey, DateTime
-from sqlalchemy.orm import relationship
 from sqlalchemy import create_engine
+from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import relationship
 from sqlalchemy.orm.session import Session
 
-from swamp.utils import Singleton
 from swamp import exception
-from swamp import datasource
 from swamp import log
+from swamp.data_source import factory
+from swamp.utils import Singleton
 
 logger = log.get_logger()
 Base = declarative_base()
@@ -112,7 +112,7 @@ class CheckInfo(Base, DBMixin):
 
     @classmethod
     def get_new(cls, device_id):
-        adsys = datasource.get_ad_source()
+        adsys = factory.get_ad_source()
         if adsys.test():
             data = adsys.get_data()
         else:

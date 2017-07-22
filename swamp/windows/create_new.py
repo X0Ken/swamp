@@ -40,9 +40,10 @@ class Window(QtGui.QDialog):
         self.setLayout(vbox)
 
     def select_clicked(self):
-        logger.debug("DeviceSelect select button clicked")
+        logger.debug("Device select button clicked")
         name = unicode(self.name.text())
         device = models.Device(name)
         device.save()
+        logger.info("New device %s created" % str(device))
         self.parent().reload_device()
         self.close()

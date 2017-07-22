@@ -2,6 +2,7 @@ from  swamp import log
 
 logger = log.get_logger()
 
+
 class AppException(Exception):
     msg_fmt = "An unknown exception occurred."
 

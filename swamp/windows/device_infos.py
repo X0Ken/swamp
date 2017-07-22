@@ -54,6 +54,7 @@ class Window(QtGui.QDialog):
     def remove_clicked(self):
         logger.debug("Remove info from list")
         info = self.infos.currentItem().info
+        logger.info("Delete info % from device %s" % (info, self.device))
         info.destroy()
         self.reload_info()
 

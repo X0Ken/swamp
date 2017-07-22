@@ -85,12 +85,12 @@ class MainWindow(QtGui.QMainWindow):
         self.showFullScreen()
 
     def select_btn_click(self):
-        logger.debug("select_btn_click")
+        logger.debug("Select device button clicked")
         select_device = SelectWindow(self)
         select_device.show()
 
     def load_all_data(self):
-        logger.debug("load device history data.")
+        logger.debug("Load device history data button clicked.")
         try:
             infos = models.CheckInfo.get_all_by_device(self._device.id)
             self.figure.clear()
@@ -107,7 +107,7 @@ class MainWindow(QtGui.QMainWindow):
                 QMessageBox.Yes, QMessageBox.Yes)
 
     def check_btn_click(self):
-        logger.debug("check_btn_click")
+        logger.debug("Check device btn clicked.")
 
         if not self._device:
             QMessageBox.warning(
@@ -126,7 +126,7 @@ class MainWindow(QtGui.QMainWindow):
         self.load_all_data()
 
     def delete_line_btn_click(self):
-        logger.debug("check_btn_click")
+        logger.debug("Delete line button clicked")
 
         if not self._device:
             QMessageBox.warning(

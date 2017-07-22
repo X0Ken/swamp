@@ -11,13 +11,13 @@ logger = log.get_logger()
 
 def app():
     log.setup()
-    logger.debug("App start")
+    logger.info("App start")
 
-    logger.debug("Create DB")
+    logger.info("Create DB")
     db = DB()
     db.create_tables()
 
-    logger.debug("Start Window")
+    logger.info("Start Window")
     app = QtGui.QApplication(sys.argv)
     main = MainWindow()
     main.show()
