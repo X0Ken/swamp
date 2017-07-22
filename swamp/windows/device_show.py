@@ -8,8 +8,8 @@ from matplotlib.backends.backend_qt4agg import FigureCanvasQTAgg as \
 from matplotlib.backends.backend_qt4agg import NavigationToolbar2QT as \
     NavigationToolbar
 
-
 from swamp.windows.device_select import Window as SelectWindow
+from swamp.windows.device_infos import Window as InfoWindow
 from swamp import log
 from swamp import models
 from swamp import exception
@@ -52,6 +52,10 @@ class MainWindow(QtGui.QMainWindow):
         check_btn.clicked.connect(self.check_btn_click)
         btn_grid.addWidget(check_btn, 0, 1)
 
+        check_btn = QtGui.QPushButton('Delete Line')
+        check_btn.clicked.connect(self.delete_line_btn_click)
+        btn_grid.addWidget(check_btn, 1, 0)
+
         exit_btn = QtGui.QPushButton('Exit')
         exit_btn.clicked.connect(self.close)
         btn_grid.addWidget(exit_btn,  1, 1)
@@ -93,7 +97,7 @@ class MainWindow(QtGui.QMainWindow):
             self.ax = self.figure.add_subplot(111)
             for info in infos:
                 self.ax.plot(json.loads(info.data), '.-',
-                             label=str(info.created_at)[:16])
+                             label=str(info))
             self.ax.legend(bbox_to_anchor=(0.02, 0.98), loc=2,
                            borderaxespad=0.)
             self.canvas.draw()
@@ -120,6 +124,18 @@ class MainWindow(QtGui.QMainWindow):
             return
 
         self.load_all_data()
+
+    def delete_line_btn_click(self):
+        logger.debug("check_btn_click")
+
+        if not self._device:
+            QMessageBox.warning(
+                self, 'Message', "You need to select device!",
+                QMessageBox.Yes, QMessageBox.Yes)
+            return
+
+        infos = InfoWindow(device=self.device, parent=self)
+        infos.show()
 
     @property
     def device(self):

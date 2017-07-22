@@ -71,5 +71,5 @@ class Window(QtGui.QDialog):
     def delete_clicked(self):
         logger.debug("Delete device button clicked")
         device = self.list_widget.currentItem().device
-        device.destory()
+        device.destroy()
         self.reload_device()

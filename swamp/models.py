@@ -10,7 +10,9 @@ from sqlalchemy.orm.session import Session
 from swamp.utils import Singleton
 from swamp import exception
 from swamp import datasource
+from swamp import log
 
+logger = log.get_logger()
 Base = declarative_base()
 
 
@@ -37,6 +39,7 @@ class DB(Singleton):
         if self._session:
             return self._session
         else:
+            logger.debug("Create new DB session")
             self._session = Session(self._engine)
             return self._session
 
@@ -53,8 +56,9 @@ class DBMixin(object):
         session = DB().session
         return session.query(cls).all()
 
-    def destory(self):
+    def destroy(self):
         session = DB().session
+        session = session.object_session(self)
         session.delete(self)
         session.commit()
 
@@ -102,6 +106,9 @@ class CheckInfo(Base, DBMixin):
     def __init__(self, device_id, data=None):
         self.device_id = device_id
         self.data = data
+
+    def __str__(self):
+        return str(self.created_at)[:16]
 
     @classmethod
     def get_new(cls, device_id):
