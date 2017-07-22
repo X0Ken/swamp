@@ -1,4 +1,5 @@
 from PyQt4 import QtGui, QtCore
+from PyQt4.QtGui import QMessageBox
 
 from swamp import log
 from swamp import models
@@ -42,8 +43,19 @@ class Window(QtGui.QDialog):
     def select_clicked(self):
         logger.debug("Device select button clicked")
         name = unicode(self.name.text())
+        if not name:
+            QMessageBox.warning(
+                self, 'Message', "You need to input a name!",
+                QMessageBox.Yes, QMessageBox.Yes)
+            return
+        if models.Device.name_exist(name):
+            QMessageBox.warning(
+                self, 'Message', "This name has been used. "
+                                 "Pleas input another!",
+                QMessageBox.Yes, QMessageBox.Yes)
+            return
         device = models.Device(name)
         device.save()
-        logger.info("New device %s created" % str(device))
+        logger.info("New device %s created" % device.name)
         self.parent().reload_device()
         self.close()

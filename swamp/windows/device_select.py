@@ -66,11 +66,11 @@ class Window(QtGui.QDialog):
     def create_clicked(self):
         logger.debug("Create new device button clicked")
         create = CreateWindow(self)
-        create.show()
+        create.exec_()
 
     def delete_clicked(self):
         logger.debug("Delete device button clicked")
         device = self.list_widget.currentItem().device
-        logger.info("Delete device %s" % str(device))
+        logger.info("Delete device %s" % device.name)
         device.destroy()
         self.reload_device()

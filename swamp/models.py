@@ -79,6 +79,11 @@ class Device(Base, DBMixin):
     def __init__(self, name):
         self.name = name
 
+    @classmethod
+    def name_exist(cls, name):
+        session = Session(DB().engine)
+        return session.query(cls).filter_by(name=name).all()
+
 
 class DeviceSetting(Base, DBMixin):
     __tablename__ = 'device_settings'

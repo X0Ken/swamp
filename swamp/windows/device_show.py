@@ -87,7 +87,7 @@ class MainWindow(QtGui.QMainWindow):
     def select_btn_click(self):
         logger.debug("Select device button clicked")
         select_device = SelectWindow(self)
-        select_device.show()
+        select_device.exec_()
 
     def load_all_data(self):
         logger.debug("Load device history data button clicked.")
@@ -135,7 +135,7 @@ class MainWindow(QtGui.QMainWindow):
             return
 
         infos = InfoWindow(device=self.device, parent=self)
-        infos.show()
+        infos.exec_()
 
     @property
     def device(self):

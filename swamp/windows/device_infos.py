@@ -18,7 +18,7 @@ class Window(QtGui.QDialog):
         super(Window, self).__init__(parent)
         self.device = device
 
-        self.setWindowTitle("Device Select")
+        self.setWindowTitle("Device Info List")
 
         infos = QtGui.QListWidget()
         self.infos = infos
@@ -55,7 +55,7 @@ class Window(QtGui.QDialog):
         logger.debug("Remove info from list")
         info = self.infos.currentItem().info
         logger.info("Delete info %s from device %s",
-                    str(info), str(self.device))
+                    str(info), self.device.name)
         info.destroy()
         self.reload_info()
 
