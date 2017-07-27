@@ -1,3 +1,5 @@
+import subprocess
+
 from PyQt4 import QtGui, QtCore
 from PyQt4.QtGui import QMessageBox
 
@@ -10,6 +12,7 @@ logger = log.get_logger()
 
 class Window(QtGui.QDialog):
     name = None
+    keyboard = None
 
     def __init__(self, parent=None):
         super(Window, self).__init__(parent)
@@ -41,6 +44,12 @@ class Window(QtGui.QDialog):
 
         self.setLayout(vbox)
 
+        try:
+            logger.debug("run matchbox-keyboard")
+            self.keyboard = subprocess.Popen(['matchbox-keyboard'])
+        except Exception as e:
+            logger.warning(e)
+
     def select_clicked(self):
         logger.debug("Device select button clicked")
         name = unicode(self.name.text())
@@ -60,3 +69,8 @@ class Window(QtGui.QDialog):
         logger.info("New device %s created" % device.name)
         self.parent().reload_device()
         self.close()
+
+    def close(self):
+        logger.debug("kill matchbox-keyboard")
+        self.keyboard.kill()
+        super(Window, self).close()
