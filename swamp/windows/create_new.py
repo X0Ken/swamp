@@ -3,6 +3,7 @@ from PyQt4.QtGui import QMessageBox
 
 from swamp import log
 from swamp import models
+from swamp.windows.ui import PushButton
 
 logger = log.get_logger()
 
@@ -23,10 +24,10 @@ class Window(QtGui.QDialog):
         grid.addWidget(name, 0, 1)
         self.name = name
 
-        select_btn = QtGui.QPushButton('Submit')
+        select_btn = PushButton('Submit')
         select_btn.clicked.connect(self.select_clicked)
 
-        cancel_btn = QtGui.QPushButton('Cancel')
+        cancel_btn = PushButton('Cancel')
         cancel_btn.clicked.connect(self.close)
 
         hbox = QtGui.QHBoxLayout()

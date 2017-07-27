@@ -2,6 +2,7 @@ from PyQt4 import QtGui, QtCore
 
 from swamp import log
 from swamp.models import CheckInfo
+from swamp.windows.ui import PushButton
 
 logger = log.get_logger()
 
@@ -23,10 +24,10 @@ class Window(QtGui.QDialog):
         infos = QtGui.QListWidget()
         self.infos = infos
 
-        delete_btn = QtGui.QPushButton('Remove')
+        delete_btn = PushButton('Remove')
         delete_btn.clicked.connect(self.remove_clicked)
 
-        cancel_btn = QtGui.QPushButton('Exit')
+        cancel_btn = PushButton('Cancel')
         cancel_btn.clicked.connect(self.close)
 
         hbox = QtGui.QHBoxLayout()

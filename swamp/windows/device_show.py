@@ -13,6 +13,7 @@ from swamp.windows.device_infos import Window as InfoWindow
 from swamp import log
 from swamp import models
 from swamp import exception
+from swamp.windows.ui import PushButton
 
 logger = log.get_logger()
 
@@ -42,23 +43,23 @@ class MainWindow(QtGui.QMainWindow):
         self.device_health = device_health
 
         # button grid begin
-        btn_grid = QtGui.QGridLayout()
+        btn_grid = QtGui.QVBoxLayout()
 
-        select_btn = QtGui.QPushButton('Select Device')
+        select_btn = PushButton('Select Device')
         select_btn.clicked.connect(self.select_btn_click)
-        btn_grid.addWidget(select_btn, 0, 0)
+        btn_grid.addWidget(select_btn)
 
-        check_btn = QtGui.QPushButton('Get New Device Info')
+        check_btn = PushButton('Get New Device Info')
         check_btn.clicked.connect(self.check_btn_click)
-        btn_grid.addWidget(check_btn, 0, 1)
+        btn_grid.addWidget(check_btn)
 
-        check_btn = QtGui.QPushButton('Delete Line')
+        check_btn = PushButton('Delete Line')
         check_btn.clicked.connect(self.delete_line_btn_click)
-        btn_grid.addWidget(check_btn, 1, 0)
+        btn_grid.addWidget(check_btn)
 
-        exit_btn = QtGui.QPushButton('Exit')
+        exit_btn = PushButton('Exit')
         exit_btn.clicked.connect(self.close)
-        btn_grid.addWidget(exit_btn,  1, 1)
+        btn_grid.addWidget(exit_btn)
 
         # right layout
         right_layout = QtGui.QVBoxLayout()

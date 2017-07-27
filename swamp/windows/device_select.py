@@ -3,6 +3,7 @@ from PyQt4 import QtGui, QtCore
 from swamp import log
 from swamp.models import Device
 from swamp.windows.create_new import Window as CreateWindow
+from swamp.windows.ui import PushButton
 
 logger = log.get_logger()
 
@@ -22,16 +23,16 @@ class Window(QtGui.QDialog):
         list_widget = QtGui.QListWidget()
         self.list_widget = list_widget
 
-        select_btn = QtGui.QPushButton('Select')
+        select_btn = PushButton('Select')
         select_btn.clicked.connect(self.select_clicked)
 
-        delete_btn = QtGui.QPushButton('Delete')
+        delete_btn = PushButton('Delete')
         delete_btn.clicked.connect(self.delete_clicked)
 
-        create_btn = QtGui.QPushButton('Create')
+        create_btn = PushButton('Create')
         create_btn.clicked.connect(self.create_clicked)
 
-        cancel_btn = QtGui.QPushButton('Cancel')
+        cancel_btn = PushButton('Cancel')
         cancel_btn.clicked.connect(self.close)
 
         hbox = QtGui.QHBoxLayout()
