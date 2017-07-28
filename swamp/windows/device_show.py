@@ -83,7 +83,7 @@ class MainWindow(QtGui.QMainWindow):
 
         self.statusBar().showMessage("Please select device.")
 
-        # self.showFullScreen()
+        self.showMaximized()
 
     def select_btn_click(self):
         logger.debug("Select device button clicked")

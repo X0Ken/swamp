@@ -46,7 +46,9 @@ class Window(QtGui.QDialog):
 
         try:
             logger.debug("run matchbox-keyboard")
-            self.keyboard = subprocess.Popen(['matchbox-keyboard'])
+            self.keyboard = subprocess.Popen(['matchbox-keyboard',
+                                              '-s',
+                                              '50'])
         except Exception as e:
             logger.warning(e)
 
