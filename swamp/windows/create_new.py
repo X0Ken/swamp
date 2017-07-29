@@ -74,5 +74,6 @@ class Window(QtGui.QDialog):
 
     def close(self):
         logger.debug("kill matchbox-keyboard")
-        self.keyboard.kill()
+        if self.keyboard:
+            self.keyboard.kill()
         super(Window, self).close()
