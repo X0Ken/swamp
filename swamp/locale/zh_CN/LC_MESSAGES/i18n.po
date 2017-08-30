@@ -2,13 +2,13 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-#
+# 
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-08-31 00:01+0800\n"
+"POT-Creation-Date: 2017-08-31 00:46+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -20,6 +20,10 @@ msgstr ""
 #: windows/create_new.py:20
 msgid "Create New Device"
 msgstr "创建新的设备"
+
+#: windows/create_new.py:24 windows/device_show.py:33
+msgid "Name:"
+msgstr "名字："
 
 #: windows/create_new.py:30
 msgid "Submit"
@@ -71,10 +75,6 @@ msgstr "创建"
 #: windows/device_show.py:26
 msgid "Device Detail"
 msgstr "设备详情"
-
-#: windows/device_show.py:33
-msgid "Name:"
-msgstr "名字："
 
 #: windows/device_show.py:39
 msgid "Health:"
