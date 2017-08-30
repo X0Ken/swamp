@@ -17,20 +17,20 @@ class Window(QtGui.QDialog):
     def __init__(self, parent=None):
         super(Window, self).__init__(parent)
 
-        self.setWindowTitle("Create New Device")
+        self.setWindowTitle(_("Create New Device"))
 
         grid = QtGui.QGridLayout()
 
-        name_label = QtGui.QLabel("name:")
+        name_label = QtGui.QLabel(_("Name:"))
         name = QtGui.QLineEdit()
         grid.addWidget(name_label, 0, 0)
         grid.addWidget(name, 0, 1)
         self.name = name
 
-        select_btn = PushButton('Submit')
+        select_btn = PushButton(_('Submit'))
         select_btn.clicked.connect(self.select_clicked)
 
-        cancel_btn = PushButton('Cancel')
+        cancel_btn = PushButton(_('Cancel'))
         cancel_btn.clicked.connect(self.close)
 
         hbox = QtGui.QHBoxLayout()
@@ -57,13 +57,13 @@ class Window(QtGui.QDialog):
         name = unicode(self.name.text())
         if not name:
             QMessageBox.warning(
-                self, 'Message', "You need to input a name!",
+                self, _('Message'), _("You need to input a name!"),
                 QMessageBox.Yes, QMessageBox.Yes)
             return
         if models.Device.name_exist(name):
             QMessageBox.warning(
-                self, 'Message', "This name has been used. "
-                                 "Pleas input another!",
+                self, _('Message'), _("This name has been used. "
+                                      "Pleas input another!"),
                 QMessageBox.Yes, QMessageBox.Yes)
             return
         device = models.Device(name)

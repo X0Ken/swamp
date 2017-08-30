@@ -5,8 +5,8 @@
 This is a test for i18n.
 
 First:
-    xgettext -k_ -o i18n.po_en i18n.py
-    xgettext -k_ -o i18n.po_zh i18n.py
+    xgettext -k_ -o ./locale/en_US/LC_MESSAGES/i18n.po i18n.py
+    xgettext -k_ -o ./locale/zh_CN/LC_MESSAGES/i18n.po i18n.py
 Next:
     msgfmt -o ./locale/en_US/LC_MESSAGES/i18n.mo i18n.po_en
     msgfmt -o ./locale/zh_CN/LC_MESSAGES/i18n.mo i18n.po_zh

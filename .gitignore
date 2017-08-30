@@ -3,3 +3,4 @@ venv
 swamp/app.log
 swamp/sqlite.db
 *.pyc
+*.mo

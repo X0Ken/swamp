@@ -1,0 +1,114 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2017-08-31 00:01+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: windows/create_new.py:20
+msgid "Create New Device"
+msgstr ""
+
+#: windows/create_new.py:24
+msgid "name:"
+msgstr ""
+
+#: windows/create_new.py:30
+msgid "Submit"
+msgstr ""
+
+#: windows/create_new.py:33 windows/device_infos.py:30
+#: windows/device_select.py:35
+msgid "Cancel"
+msgstr ""
+
+#: windows/create_new.py:60 windows/create_new.py:65 windows/device_show.py:107
+#: windows/device_show.py:115 windows/device_show.py:123
+#: windows/device_show.py:134
+msgid "Message"
+msgstr ""
+
+#: windows/create_new.py:60
+msgid "You need to input a name!"
+msgstr ""
+
+#: windows/create_new.py:65
+msgid "This name has been used. Pleas input another!"
+msgstr ""
+
+#: windows/device_infos.py:22
+msgid "Device Info List"
+msgstr ""
+
+#: windows/device_infos.py:27
+msgid "Remove"
+msgstr ""
+
+#: windows/device_select.py:21
+msgid "Device Select"
+msgstr ""
+
+#: windows/device_select.py:26
+msgid "Select"
+msgstr ""
+
+#: windows/device_select.py:29
+msgid "Delete"
+msgstr ""
+
+#: windows/device_select.py:32
+msgid "Create"
+msgstr ""
+
+#: windows/device_show.py:26
+msgid "Device Detail"
+msgstr ""
+
+#: windows/device_show.py:33
+msgid "Name:"
+msgstr ""
+
+#: windows/device_show.py:39
+msgid "Health:"
+msgstr ""
+
+#: windows/device_show.py:48
+msgid "Select Device"
+msgstr ""
+
+#: windows/device_show.py:52
+msgid "Get New Device Info"
+msgstr ""
+
+#: windows/device_show.py:56
+msgid "Delete Line"
+msgstr ""
+
+#: windows/device_show.py:60
+msgid "Exit"
+msgstr ""
+
+#: windows/device_show.py:107 windows/device_show.py:123
+msgid "Data source error"
+msgstr ""
+
+#: windows/device_show.py:115 windows/device_show.py:134
+msgid "You need to select device!"
+msgstr ""
+
+#: windows/device_show.py:150
+#, python-format
+msgid "Device: %s"
+msgstr ""

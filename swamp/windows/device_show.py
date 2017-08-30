@@ -23,20 +23,20 @@ class MainWindow(QtGui.QMainWindow):
 
     def __init__(self, parent=None):
         super(MainWindow, self).__init__(parent)
-        self.setWindowTitle("Device Detail")
+        self.setWindowTitle(_("Device Detail"))
         self.figure = plt.figure()
         self.canvas = FigureCanvas(self.figure)
         self.toolbar = NavigationToolbar(self.canvas, self)
 
         # label grid
         label_grid = QtGui.QGridLayout()
-        name_lable = QtGui.QLabel("Name:")
+        name_lable = QtGui.QLabel(_("Name:"))
         device_name = QtGui.QLabel("")
         label_grid.addWidget(name_lable, 0, 0)
         label_grid.addWidget(device_name, 0, 1)
         self.device_name = device_name
 
-        health_label = QtGui.QLabel("Health:")
+        health_label = QtGui.QLabel(_("Health:"))
         device_health = QtGui.QLabel("")
         label_grid.addWidget(health_label, 1, 0)
         label_grid.addWidget(device_health, 1, 1)
@@ -45,19 +45,19 @@ class MainWindow(QtGui.QMainWindow):
         # button grid begin
         btn_grid = QtGui.QVBoxLayout()
 
-        select_btn = PushButton('Select Device')
+        select_btn = PushButton(_('Select Device'))
         select_btn.clicked.connect(self.select_btn_click)
         btn_grid.addWidget(select_btn)
 
-        check_btn = PushButton('Get New Device Info')
+        check_btn = PushButton(_('Get New Device Info'))
         check_btn.clicked.connect(self.check_btn_click)
         btn_grid.addWidget(check_btn)
 
-        check_btn = PushButton('Delete Line')
+        check_btn = PushButton(_('Delete Line'))
         check_btn.clicked.connect(self.delete_line_btn_click)
         btn_grid.addWidget(check_btn)
 
-        exit_btn = PushButton('Exit')
+        exit_btn = PushButton(_('Exit'))
         exit_btn.clicked.connect(self.close)
         btn_grid.addWidget(exit_btn)
 
@@ -104,7 +104,7 @@ class MainWindow(QtGui.QMainWindow):
             self.canvas.draw()
         except exception.DataSourceGetError:
             QMessageBox.warning(
-                self, 'Message', "Data source error",
+                self, _('Message'), _("Data source error"),
                 QMessageBox.Yes, QMessageBox.Yes)
 
     def check_btn_click(self):
@@ -112,7 +112,7 @@ class MainWindow(QtGui.QMainWindow):
 
         if not self._device:
             QMessageBox.warning(
-                self, 'Message', "You need to select device!",
+                self, _('Message'), _("You need to select device!"),
                 QMessageBox.Yes, QMessageBox.Yes)
             return
 
@@ -120,7 +120,7 @@ class MainWindow(QtGui.QMainWindow):
             models.CheckInfo.get_new(self._device.id)
         except exception.DataSourceGetError:
             QMessageBox.warning(
-                self, 'Message', "Data source error",
+                self, _('Message'), _("Data source error"),
                 QMessageBox.Yes, QMessageBox.Yes)
             return
 
@@ -131,7 +131,7 @@ class MainWindow(QtGui.QMainWindow):
 
         if not self._device:
             QMessageBox.warning(
-                self, 'Message', "You need to select device!",
+                self, _('Message'), _("You need to select device!"),
                 QMessageBox.Yes, QMessageBox.Yes)
             return
 
@@ -147,4 +147,4 @@ class MainWindow(QtGui.QMainWindow):
         self._device = value
         self.device_name.setText(value.name)
         self.load_all_data()
-        self.statusBar().showMessage("Device: %s" % value.name)
+        self.statusBar().showMessage(_("Device: %s") % value.name)

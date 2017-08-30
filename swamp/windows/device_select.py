@@ -18,21 +18,21 @@ class Window(QtGui.QDialog):
     def __init__(self, parent=None):
         super(Window, self).__init__(parent)
 
-        self.setWindowTitle("Device Select")
+        self.setWindowTitle(_("Device Select"))
 
         list_widget = QtGui.QListWidget()
         self.list_widget = list_widget
 
-        select_btn = PushButton('Select')
+        select_btn = PushButton(_('Select'))
         select_btn.clicked.connect(self.select_clicked)
 
-        delete_btn = PushButton('Delete')
+        delete_btn = PushButton(_('Delete'))
         delete_btn.clicked.connect(self.delete_clicked)
 
-        create_btn = PushButton('Create')
+        create_btn = PushButton(_('Create'))
         create_btn.clicked.connect(self.create_clicked)
 
-        cancel_btn = PushButton('Cancel')
+        cancel_btn = PushButton(_('Cancel'))
         cancel_btn.clicked.connect(self.close)
 
         hbox = QtGui.QHBoxLayout()

@@ -19,15 +19,15 @@ class Window(QtGui.QDialog):
         super(Window, self).__init__(parent)
         self.device = device
 
-        self.setWindowTitle("Device Info List")
+        self.setWindowTitle(_("Device Info List"))
 
         infos = QtGui.QListWidget()
         self.infos = infos
 
-        delete_btn = PushButton('Remove')
+        delete_btn = PushButton(_('Remove'))
         delete_btn.clicked.connect(self.remove_clicked)
 
-        cancel_btn = PushButton('Cancel')
+        cancel_btn = PushButton(_('Cancel'))
         cancel_btn.clicked.connect(self.close)
 
         hbox = QtGui.QHBoxLayout()
