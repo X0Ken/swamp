@@ -30,3 +30,6 @@ class AppException(Exception):
 
 class DataSourceGetError(AppException):
     msg_fmt = "An unknown exception occurred."
+
+class InvalidError(AppException):
+    msg_fmt = "An unknown exception occurred."

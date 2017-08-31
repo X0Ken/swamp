@@ -4,7 +4,7 @@ from datetime import datetime
 from sqlalchemy import Column, Integer, String, ForeignKey, DateTime
 from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import relationship
+from sqlalchemy.orm import relationship, backref
 from sqlalchemy.orm.session import Session
 
 from swamp import exception
@@ -14,6 +14,10 @@ from swamp.utils import Singleton
 
 logger = log.get_logger()
 Base = declarative_base()
+
+POWER_TIME = 'power_time'
+SET_CURRENT = 'set_current'
+FAULT_JUDGMENT = 'fault_judgment'
 
 
 class DB(Singleton):
@@ -43,6 +47,9 @@ class DB(Singleton):
             self._session = Session(self._engine)
             return self._session
 
+    def commit(self):
+        self.session.commit()
+
 
 class DBMixin(object):
     def save(self):
@@ -70,9 +77,6 @@ class Device(Base, DBMixin):
     description = Column(String)
     created_at = Column(DateTime, default=datetime.now)
 
-    check_infos = relationship("CheckInfo")
-    settings = relationship("DeviceSetting")
-
     def __repr__(self):
         return "<Device(name='%s')>" % self.name
 
@@ -93,7 +97,14 @@ class DeviceSetting(Base, DBMixin):
     value = Column(String)
     created_at = Column(DateTime, default=datetime.now)
 
-    device = relationship("Device", back_populates="settings")
+    device = relationship(
+        Device, backref=backref('settings', lazy='dynamic'))
+
+    def __init__(self, device_id, key=None, value=None):
+        self.device_id = device_id
+        if key:
+            self.key = key
+            self.value = value
 
     def __repr__(self):
         return "<DeviceSetting(key='%s')>" % self.key
@@ -106,7 +117,8 @@ class CheckInfo(Base, DBMixin):
     created_at = Column(DateTime, default=datetime.now)
     data = Column(String)
 
-    device = relationship("Device", back_populates="check_infos")
+    device = relationship(
+        Device, backref=backref('check_infos', lazy='dynamic'))
 
     def __init__(self, device_id, data=None):
         self.device_id = device_id

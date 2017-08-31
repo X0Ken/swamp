@@ -28,38 +28,9 @@ class MainWindow(QtGui.QMainWindow):
         self.canvas = FigureCanvas(self.figure)
         self.toolbar = NavigationToolbar(self.canvas, self)
 
-        # label grid
-        label_grid = QtGui.QGridLayout()
-        name_lable = QtGui.QLabel(_("Name:"))
-        device_name = QtGui.QLabel("")
-        label_grid.addWidget(name_lable, 0, 0)
-        label_grid.addWidget(device_name, 0, 1)
-        self.device_name = device_name
+        label_grid = self.init_info_area()
 
-        health_label = QtGui.QLabel(_("Health:"))
-        device_health = QtGui.QLabel("")
-        label_grid.addWidget(health_label, 1, 0)
-        label_grid.addWidget(device_health, 1, 1)
-        self.device_health = device_health
-
-        # button grid begin
-        btn_grid = QtGui.QVBoxLayout()
-
-        select_btn = PushButton(_('Select Device'))
-        select_btn.clicked.connect(self.select_btn_click)
-        btn_grid.addWidget(select_btn)
-
-        check_btn = PushButton(_('Get New Device Info'))
-        check_btn.clicked.connect(self.check_btn_click)
-        btn_grid.addWidget(check_btn)
-
-        check_btn = PushButton(_('Delete Line'))
-        check_btn.clicked.connect(self.delete_line_btn_click)
-        btn_grid.addWidget(check_btn)
-
-        exit_btn = PushButton(_('Exit'))
-        exit_btn.clicked.connect(self.close)
-        btn_grid.addWidget(exit_btn)
+        btn_grid = self.init_menu_area()
 
         # right layout
         right_layout = QtGui.QVBoxLayout()
@@ -81,9 +52,65 @@ class MainWindow(QtGui.QMainWindow):
         self.setCentralWidget(QtGui.QWidget())
         self.centralWidget().setLayout(layout)
 
-        self.statusBar().showMessage("Please select device.")
+        self.statusBar().showMessage(_("Please select device."))
 
         self.showMaximized()
+
+    def init_menu_area(self):
+        # button grid begin
+        btn_grid = QtGui.QVBoxLayout()
+        select_btn = PushButton(_('Select Device'))
+        select_btn.clicked.connect(self.select_btn_click)
+        btn_grid.addWidget(select_btn)
+
+        check_btn = PushButton(_('Get New Device Info'))
+        check_btn.clicked.connect(self.check_btn_click)
+        btn_grid.addWidget(check_btn)
+
+        check_btn = PushButton(_('Delete Line'))
+        check_btn.clicked.connect(self.delete_line_btn_click)
+        btn_grid.addWidget(check_btn)
+
+        exit_btn = PushButton(_('Exit'))
+        exit_btn.clicked.connect(self.close)
+        btn_grid.addWidget(exit_btn)
+
+        return btn_grid
+
+    def init_info_area(self):
+        # label grid
+        label_grid = QtGui.QGridLayout()
+        name_lable = QtGui.QLabel(_("Name:"))
+        device_name = QtGui.QLabel("")
+        label_grid.addWidget(name_lable, 0, 0)
+        label_grid.addWidget(device_name, 0, 1)
+        self.device_name = device_name
+
+        health_label = QtGui.QLabel(_("Health:"))
+        device_health = QtGui.QLabel("")
+        label_grid.addWidget(health_label, 1, 0)
+        label_grid.addWidget(device_health, 1, 1)
+        self.device_health = device_health
+
+        power_time_label = QtGui.QLabel(_("Power time:"))
+        power_time = QtGui.QLabel("")
+        label_grid.addWidget(power_time_label, 2, 0)
+        label_grid.addWidget(power_time, 2, 1)
+        self.power_time = power_time
+
+        set_current_label = QtGui.QLabel(_("Set current value:"))
+        set_current = QtGui.QLabel("")
+        label_grid.addWidget(set_current_label, 3, 0)
+        label_grid.addWidget(set_current, 3, 1)
+        self.set_current = set_current
+
+        fault_judgment_label = QtGui.QLabel(_("Fault judgment value:"))
+        fault_judgment = QtGui.QLabel("")
+        label_grid.addWidget(fault_judgment_label, 4, 0)
+        label_grid.addWidget(fault_judgment, 4, 1)
+        self.fault_judgment = fault_judgment
+
+        return label_grid
 
     def select_btn_click(self):
         logger.debug("Select device button clicked")
@@ -146,5 +173,14 @@ class MainWindow(QtGui.QMainWindow):
     def device(self, value):
         self._device = value
         self.device_name.setText(value.name)
+        setting = value.settings.filter_by(key=models.POWER_TIME).first()
+        if setting:
+            self.power_time.setText(_("%s s") % setting.value)
+        setting = value.settings.filter_by(key=models.SET_CURRENT).first()
+        if setting:
+            self.set_current.setText(_("%s A") % setting.value)
+        setting = value.settings.filter_by(key=models.FAULT_JUDGMENT).first()
+        if setting:
+            self.fault_judgment.setText(_("%s %%") % setting.value)
         self.load_all_data()
         self.statusBar().showMessage(_("Device: %s") % value.name)
