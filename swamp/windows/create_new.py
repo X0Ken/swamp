@@ -14,7 +14,7 @@ logger = log.get_logger()
 
 class Window(QtGui.QDialog):
     name = None
-    power_time = None
+    max_time = None
     keyboard = None
 
     def __init__(self, parent=None):
@@ -29,20 +29,20 @@ class Window(QtGui.QDialog):
         grid.addWidget(name_label, 0, 0)
         grid.addWidget(self.name, 0, 1)
 
-        power_time_label = QtGui.QLabel(_("Power time(s):"))
-        self.power_time = QtGui.QLineEdit()
-        grid.addWidget(power_time_label, 1, 0)
-        grid.addWidget(self.power_time, 1, 1)
+        max_current_label = QtGui.QLabel(_("Max I(A):"))
+        self.max_current = QtGui.QLineEdit()
+        grid.addWidget(max_current_label, 1, 0)
+        grid.addWidget(self.max_current, 1, 1)
 
-        set_current_label = QtGui.QLabel(_("Set current value(A):"))
-        self.set_current = QtGui.QLineEdit()
-        grid.addWidget(set_current_label, 2, 0)
-        grid.addWidget(self.set_current, 2, 1)
+        max_time_label = QtGui.QLabel(_("Max T(ms):"))
+        self.max_time = QtGui.QLineEdit()
+        grid.addWidget(max_time_label, 2, 0)
+        grid.addWidget(self.max_time, 2, 1)
 
-        fault_judgment_label = QtGui.QLabel(_("Fault judgment value(%):"))
-        self.fault_judgment = QtGui.QLineEdit()
-        grid.addWidget(fault_judgment_label, 3, 0)
-        grid.addWidget(self.fault_judgment, 3, 1)
+        compare_time_label = QtGui.QLabel(_("Compare T(ms):"))
+        self.compare_time = QtGui.QLineEdit()
+        grid.addWidget(compare_time_label, 3, 0)
+        grid.addWidget(self.compare_time, 3, 1)
 
         select_btn = PushButton(_('Submit'))
         select_btn.clicked.connect(self.select_clicked)
@@ -76,42 +76,42 @@ class Window(QtGui.QDialog):
             raise exception.InvalidError(_("This name has been used. "
                                            "Pleas input another!"))
 
-    def check_power_time(self, power_time):
+    def check_max_current(self, max_current):
         try:
-            power_time = int(power_time)
+            max_current = float(max_current)
         except ValueError:
-            raise exception.InvalidError(_("Power time must be a number!"))
-        if power_time < 1:
-            raise exception.InvalidError(_("Power time must bigger than 1!"))
+            raise exception.InvalidError(_("Max current must be a number!"))
+        if max_current <= 0:
+            raise exception.InvalidError(_("Max current must more than 0!"))
 
-    def check_set_current(self, set_current):
+    def check_max_time(self, max_time):
         try:
-            set_current = int(set_current)
+            max_time = int(max_time)
         except ValueError:
-            raise exception.InvalidError(_("Current must be a number!"))
-        if set_current < 1:
-            raise exception.InvalidError(_("Current must bigger than 1!"))
+            raise exception.InvalidError(_("Max time must be a number!"))
+        if max_time <= 0:
+            raise exception.InvalidError(_("Max time must more than 0!"))
 
-    def check_fault_judgment(self, fault_judgment):
+    def check_compare_time(self, compare_time, max_time):
         try:
-            fault_judgment = int(fault_judgment)
+            compare_time = int(compare_time)
         except ValueError:
-            raise exception.InvalidError(_("Fault judgment value must be a number!"))
-        if fault_judgment < 1 or fault_judgment > 99:
-            raise exception.InvalidError(_("Fault judgment value must between "
-                                           "1 and 99!"))
+            raise exception.InvalidError(_("Compare time must be a number!"))
+        if compare_time <= 0 or compare_time > int(max_time):
+            raise exception.InvalidError(_("Compare time must more than 0,"
+                                           " and less then Max time!"))
 
     def select_clicked(self):
         logger.debug("Device select button clicked")
         name = unicode(self.name.text())
-        power_time = unicode(self.power_time.text())
-        set_current = unicode(self.set_current.text())
-        fault_judgment = unicode(self.fault_judgment.text())
+        max_time = unicode(self.max_time.text())
+        compare_time = unicode(self.compare_time.text())
+        max_current = unicode(self.max_current.text())
         try:
             self.check_name(name)
-            self.check_power_time(power_time)
-            self.check_set_current(set_current)
-            self.check_fault_judgment(fault_judgment)
+            self.check_max_time(max_time)
+            self.check_compare_time(compare_time, max_time)
+            self.check_max_current(max_current)
         except exception.InvalidError as e:
             QMessageBox.warning(
                 self, _('Message'), e.message,
@@ -121,17 +121,17 @@ class Window(QtGui.QDialog):
         device = models.Device(name)
         device.save()
         device.settings.append(
-            models.DeviceSetting(device_id=device.id, key=models.POWER_TIME,
-                                 value=unicode(self.power_time.text()))
+            models.DeviceSetting(device_id=device.id, key=models.MAX_TIME,
+                                 value=unicode(max_time))
         )
         device.settings.append(
-            models.DeviceSetting(device_id=device.id, key=models.SET_CURRENT,
-                                 value=unicode(self.set_current.text()))
+            models.DeviceSetting(device_id=device.id, key=models.COMPARE_TIME,
+                                 value=unicode(compare_time))
         )
         device.settings.append(
             models.DeviceSetting(device_id=device.id,
-                                 key=models.FAULT_JUDGMENT,
-                                 value=unicode(self.fault_judgment.text()))
+                                 key=models.MAX_CURRENT,
+                                 value=unicode(max_current))
         )
         DB().commit()
 

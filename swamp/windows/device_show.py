@@ -92,23 +92,23 @@ class MainWindow(QtGui.QMainWindow):
         label_grid.addWidget(device_health, 1, 1)
         self.device_health = device_health
 
-        power_time_label = QtGui.QLabel(_("Power time:"))
-        power_time = QtGui.QLabel("")
-        label_grid.addWidget(power_time_label, 2, 0)
-        label_grid.addWidget(power_time, 2, 1)
-        self.power_time = power_time
+        max_current_label = QtGui.QLabel(_("Max current value:"))
+        max_current = QtGui.QLabel("")
+        label_grid.addWidget(max_current_label, 2, 0)
+        label_grid.addWidget(max_current, 2, 1)
+        self.max_current = max_current
 
-        set_current_label = QtGui.QLabel(_("Set current value:"))
-        set_current = QtGui.QLabel("")
-        label_grid.addWidget(set_current_label, 3, 0)
-        label_grid.addWidget(set_current, 3, 1)
-        self.set_current = set_current
+        max_time_label = QtGui.QLabel(_("Max time:"))
+        max_time = QtGui.QLabel("")
+        label_grid.addWidget(max_time_label, 3, 0)
+        label_grid.addWidget(max_time, 3, 1)
+        self.max_time = max_time
 
-        fault_judgment_label = QtGui.QLabel(_("Fault judgment value:"))
-        fault_judgment = QtGui.QLabel("")
-        label_grid.addWidget(fault_judgment_label, 4, 0)
-        label_grid.addWidget(fault_judgment, 4, 1)
-        self.fault_judgment = fault_judgment
+        compare_time_label = QtGui.QLabel(_("Compare time:"))
+        compare_time = QtGui.QLabel("")
+        label_grid.addWidget(compare_time_label, 4, 0)
+        label_grid.addWidget(compare_time, 4, 1)
+        self.compare_time = compare_time
 
         return label_grid
 
@@ -173,14 +173,14 @@ class MainWindow(QtGui.QMainWindow):
     def device(self, value):
         self._device = value
         self.device_name.setText(value.name)
-        setting = value.settings.filter_by(key=models.POWER_TIME).first()
+        setting = value.settings.filter_by(key=models.MAX_TIME).first()
         if setting:
-            self.power_time.setText(_("%s s") % setting.value)
-        setting = value.settings.filter_by(key=models.SET_CURRENT).first()
+            self.max_time.setText(_("%s ms") % setting.value)
+        setting = value.settings.filter_by(key=models.COMPARE_TIME).first()
         if setting:
-            self.set_current.setText(_("%s A") % setting.value)
-        setting = value.settings.filter_by(key=models.FAULT_JUDGMENT).first()
+            self.compare_time.setText(_("%s ms") % setting.value)
+        setting = value.settings.filter_by(key=models.MAX_CURRENT).first()
         if setting:
-            self.fault_judgment.setText(_("%s %%") % setting.value)
+            self.max_current.setText(_("%s A") % setting.value)
         self.load_all_data()
         self.statusBar().showMessage(_("Device: %s") % value.name)

@@ -15,9 +15,9 @@ from swamp.utils import Singleton
 logger = log.get_logger()
 Base = declarative_base()
 
-POWER_TIME = 'power_time'
-SET_CURRENT = 'set_current'
-FAULT_JUDGMENT = 'fault_judgment'
+MAX_TIME = 'max_time'
+COMPARE_TIME = 'compare_time'
+MAX_CURRENT = 'max_current'
 
 
 class DB(Singleton):

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-09-01 01:13+0800\n"
+"POT-Creation-Date: 2017-09-03 12:25+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -21,21 +21,21 @@ msgstr ""
 msgid "Create New Device"
 msgstr "创建新的设备"
 
-#: windows/create_new.py:27 windows/device_show.py:84
+#: windows/create_new.py:27 windows/device_show.py:83
 msgid "Name:"
 msgstr "名字："
 
 #: windows/create_new.py:32
-msgid "Power time(s):"
-msgstr "通电时间（秒）："
+msgid "Max I(A):"
+msgstr "最大励磁电流值（A）："
 
 #: windows/create_new.py:37
-msgid "Set current value(A):"
-msgstr "设置电流值（A）："
+msgid "Max T(ms):"
+msgstr "最大测量时间（ms）："
 
 #: windows/create_new.py:42
-msgid "Fault judgment value(%):"
-msgstr "故障判断值（%）："
+msgid "Compare T(ms):"
+msgstr "比较时间（ms）："
 
 #: windows/create_new.py:47
 msgid "Submit"
@@ -55,32 +55,32 @@ msgid "This name has been used. Pleas input another!"
 msgstr "这个名字已经被使用了，请换一个"
 
 #: windows/create_new.py:83
-msgid "Power time must be a number!"
-msgstr "通电时间必须是一个数字！"
+msgid "Max current must be a number!"
+msgstr "最大励磁电流必须是一个数字！"
 
 #: windows/create_new.py:85
-msgid "Power time must bigger than 1!"
-msgstr "通电时间必须大于1！"
+msgid "Max current must more than 0!"
+msgstr "最大励磁电流必须大于0！"
 
 #: windows/create_new.py:91
-msgid "Current must be a number!"
-msgstr "电流值必须是一个数字！"
+msgid "Max time must be a number!"
+msgstr "最大测量时间必须是一个整数！"
 
 #: windows/create_new.py:93
-msgid "Current must bigger than 1!"
-msgstr "电流值必须大于1！"
+msgid "Max time must more than 0!"
+msgstr "最大测量时间必须大于0！"
 
 #: windows/create_new.py:99
-msgid "Fault judgment value must be a number!"
-msgstr "故障判断值必须是一个数字！"
+msgid "Compare time must be a number!"
+msgstr "比较时间必须是一个整数！"
 
 #: windows/create_new.py:101
-msgid "Fault judgment value must between 1 and 99!"
-msgstr "故障判断值应在1到99之间！"
+msgid "Compare time must more than 0, and less then Max time!"
+msgstr "比较时间必须在0和最大测量时间中间取值！"
 
-#: windows/create_new.py:117 windows/device_show.py:135
-#: windows/device_show.py:143 windows/device_show.py:151
-#: windows/device_show.py:162
+#: windows/create_new.py:117 windows/device_show.py:134
+#: windows/device_show.py:142 windows/device_show.py:150
+#: windows/device_show.py:161
 msgid "Message"
 msgstr "消息"
 
@@ -108,70 +108,65 @@ msgstr "删除"
 msgid "Create"
 msgstr "创建"
 
-#: windows/device_show.py:27
+#: windows/device_show.py:26
 msgid "Device Detail"
 msgstr "设备详情"
 
-#: windows/device_show.py:56
+#: windows/device_show.py:55
 msgid "Please select device."
 msgstr "请先选择一个设备。"
 
-#: windows/device_show.py:63
+#: windows/device_show.py:62
 msgid "Select Device"
 msgstr "选择设备"
 
-#: windows/device_show.py:67
+#: windows/device_show.py:66
 msgid "Get New Device Info"
 msgstr "获取设备信息"
 
-#: windows/device_show.py:71
+#: windows/device_show.py:70
 msgid "Delete Line"
 msgstr "删除线"
 
-#: windows/device_show.py:75
+#: windows/device_show.py:74
 msgid "Exit"
 msgstr "退出"
 
-#: windows/device_show.py:90
+#: windows/device_show.py:89
 msgid "Health:"
 msgstr "健康："
 
-#: windows/device_show.py:96
-msgid "Power time:"
-msgstr "通电时间："
+#: windows/device_show.py:95
+msgid "Max current value:"
+msgstr "最大励磁电流："
 
-#: windows/device_show.py:102
-msgid "Set current value:"
-msgstr "设置电流值"
+#: windows/device_show.py:101
+msgid "Max time:"
+msgstr "最大测量时间："
 
-#: windows/device_show.py:108
-msgid "Fault judgment value:"
-msgstr "故障判断值"
+#: windows/device_show.py:107
+msgid "Compare time:"
+msgstr "比较时间："
 
-#: windows/device_show.py:135 windows/device_show.py:151
+#: windows/device_show.py:134 windows/device_show.py:150
 msgid "Data source error"
 msgstr "数据源错误"
 
-#: windows/device_show.py:143 windows/device_show.py:162
+#: windows/device_show.py:142 windows/device_show.py:161
 msgid "You need to select device!"
 msgstr "你需要选择一个设备"
 
-#: windows/device_show.py:179
+#: windows/device_show.py:178 windows/device_show.py:181
 #, python-format
-msgid "%s s"
-msgstr "%s 秒"
+msgid "%s ms"
+msgstr ""
 
-#: windows/device_show.py:182
+#: windows/device_show.py:184
 #, python-format
 msgid "%s A"
 msgstr "%s A"
 
-#: windows/device_show.py:185
-#, python-format
-msgid "%s %%"
-msgstr "%s %%"
-
-#: windows/device_show.py:187
+#: windows/device_show.py:186
 #, python-format
 msgid "Device: %s"
 msgstr "设备：%s"
