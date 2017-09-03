@@ -1,5 +1,10 @@
 #!/usr/bin/python
 # -*- coding:utf-8 -*-
+"""
+经测算，测量系统测量20000个点所需要的时间为4:05.3。
+平均每个点的测量时间为0.0049s。
+1s能测量204个点。
+"""
 import serial
 import json
 import time
