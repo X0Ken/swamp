@@ -144,7 +144,17 @@ class MainWindow(QtGui.QMainWindow):
             return
 
         try:
-            models.CheckInfo.get_new(self._device.id)
+            max_t = 200
+            setting = self._device.settings.filter_by(
+                key=models.MAX_TIME).first()
+            if setting:
+                max_t = int(setting.value)
+            max_i = 40
+            setting = self._device.settings.filter_by(
+                key=models.MAX_CURRENT).first()
+            if setting:
+                max_i = float(setting.value)
+            models.CheckInfo.get_new(self._device.id, max_i, max_t)
         except exception.DataSourceGetError:
             QMessageBox.warning(
                 self, _('Message'), _("Data source error"),

@@ -128,10 +128,10 @@ class CheckInfo(Base, DBMixin):
         return str(self.created_at)[:16]
 
     @classmethod
-    def get_new(cls, device_id):
+    def get_new(cls, device_id, max_i, max_t):
         adsys = factory.get_ad_source()
         if adsys.test():
-            data = adsys.get_data()
+            data = adsys.get_data(max_i, max_t)
         else:
             raise exception.DataSourceGetError
         info = cls(device_id=device_id, data=json.dumps(data))
