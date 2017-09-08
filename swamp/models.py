@@ -88,6 +88,25 @@ class Device(Base, DBMixin):
         session = Session(DB().engine)
         return session.query(cls).filter_by(name=name).all()
 
+    def get_setting(self, key, default=None, _type=None):
+        setting = self.settings.filter_by(key=key).first()
+        if not setting:
+            return default
+        value = setting.value
+        if _type:
+            return _type(value)
+        return value
+
+    def get_max_time(self, default=0):
+        return self.get_setting(MAX_TIME, default=default, _type=int)
+
+    def get_compare_time(self, default=0):
+        return self.get_setting(COMPARE_TIME, default=default, _type=int)
+
+    def get_max_current(self, default=0.0):
+        return self.get_setting(MAX_CURRENT, default=default, _type=float)
+
+
 
 class DeviceSetting(Base, DBMixin):
     __tablename__ = 'device_settings'
@@ -141,4 +160,4 @@ class CheckInfo(Base, DBMixin):
     @classmethod
     def get_all_by_device(cls, device_id):
         session = Session(DB().engine)
-        return session.query(cls).filter_by(device_id=device_id).all()
+        return session.query(cls).filter_by(device_id=device_id)

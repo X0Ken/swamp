@@ -8,6 +8,7 @@ from matplotlib.backends.backend_qt4agg import FigureCanvasQTAgg as \
 from matplotlib.backends.backend_qt4agg import NavigationToolbar2QT as \
     NavigationToolbar
 
+from swamp.diagnosis import diagnosis
 from swamp.windows.device_select import Window as SelectWindow
 from swamp.windows.device_infos import Window as InfoWindow
 from swamp import log
@@ -86,7 +87,7 @@ class MainWindow(QtGui.QMainWindow):
         label_grid.addWidget(device_name, 0, 1)
         self.device_name = device_name
 
-        health_label = QtGui.QLabel(_("Health:"))
+        health_label = QtGui.QLabel(_("Diagnosis:"))
         device_health = QtGui.QLabel("")
         label_grid.addWidget(health_label, 1, 0)
         label_grid.addWidget(device_health, 1, 1)
@@ -123,9 +124,22 @@ class MainWindow(QtGui.QMainWindow):
             infos = models.CheckInfo.get_all_by_device(self._device.id)
             self.figure.clear()
             self.ax = self.figure.add_subplot(111)
+
+            compare_time = self._device.get_compare_time(default=0)
+            max_time = self._device.get_max_time(default=0)
+
+            vline = False
             for info in infos:
-                self.ax.plot(json.loads(info.data), '.-',
-                             label=str(info))
+                data = json.loads(info.data)
+                self.ax.plot([t for t, v in data], [v for t, v in data],
+                             '.-', label=str(info))
+                if max_time and compare_time:
+                    index = compare_time * len(data) / max_time
+                    if not vline:
+                        self.ax.axvline(compare_time, linestyle='--')
+                        vline = True
+                    self.ax.axhline(data[index][1], linestyle='--')
+
             self.ax.legend(bbox_to_anchor=(0.02, 0.98), loc=2,
                            borderaxespad=0.)
             self.canvas.draw()
@@ -133,6 +147,7 @@ class MainWindow(QtGui.QMainWindow):
             QMessageBox.warning(
                 self, _('Message'), _("Data source error"),
                 QMessageBox.Yes, QMessageBox.Yes)
+        self._diagnosis()
 
     def check_btn_click(self):
         logger.debug("Check device btn clicked.")
@@ -144,16 +159,8 @@ class MainWindow(QtGui.QMainWindow):
             return
 
         try:
-            max_t = 200
-            setting = self._device.settings.filter_by(
-                key=models.MAX_TIME).first()
-            if setting:
-                max_t = int(setting.value)
-            max_i = 40
-            setting = self._device.settings.filter_by(
-                key=models.MAX_CURRENT).first()
-            if setting:
-                max_i = float(setting.value)
+            max_t = self._device.get_max_time(default=200)
+            max_i = self._device.get_max_current(default=40.0)
             models.CheckInfo.get_new(self._device.id, max_i, max_t)
         except exception.DataSourceGetError:
             QMessageBox.warning(
@@ -175,6 +182,18 @@ class MainWindow(QtGui.QMainWindow):
         infos = InfoWindow(device=self.device, parent=self)
         infos.exec_()
 
+    def _diagnosis(self):
+        info_number = models.CheckInfo.get_all_by_device(
+            self._device.id).count()
+        if info_number < 2:
+            self.device_health.setText(_("Insufficient data"))
+            return
+
+        if diagnosis(self._device):
+            self.device_health.setText(_("Health"))
+        else:
+            self.device_health.setText(_("Fault"))
+
     @property
     def device(self):
         return self._device
@@ -183,14 +202,12 @@ class MainWindow(QtGui.QMainWindow):
     def device(self, value):
         self._device = value
         self.device_name.setText(value.name)
-        setting = value.settings.filter_by(key=models.MAX_TIME).first()
-        if setting:
-            self.max_time.setText(_("%s ms") % setting.value)
-        setting = value.settings.filter_by(key=models.COMPARE_TIME).first()
-        if setting:
-            self.compare_time.setText(_("%s ms") % setting.value)
-        setting = value.settings.filter_by(key=models.MAX_CURRENT).first()
-        if setting:
-            self.max_current.setText(_("%s A") % setting.value)
+        max_time = self._device.get_setting(models.MAX_TIME, default="")
+        self.max_time.setText(_("%s ms") % max_time)
+        compare_time = self._device.get_setting(models.COMPARE_TIME,
+                                                default="")
+        self.compare_time.setText(_("%s ms") % compare_time)
+        max_current = self._device.get_setting(models.MAX_CURRENT, default="")
+        self.max_current.setText(_("%s A") % max_current)
         self.load_all_data()
         self.statusBar().showMessage(_("Device: %s") % value.name)

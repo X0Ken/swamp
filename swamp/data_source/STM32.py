@@ -73,7 +73,7 @@ class ADSource(ADSourceBase):
         results = []
         for i in xrange(max_t):
             r = self._get_one_data(ser)
-            results.append(r)
+            results.append((i * 1000 / 204, r))
         c = ser.read()
         if c != OK:
             raise Exception("Data format error")
