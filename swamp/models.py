@@ -107,7 +107,6 @@ class Device(Base, DBMixin):
         return self.get_setting(MAX_CURRENT, default=default, _type=float)
 
 
-
 class DeviceSetting(Base, DBMixin):
     __tablename__ = 'device_settings'
     id = Column(Integer, primary_key=True)
