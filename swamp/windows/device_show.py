@@ -136,7 +136,7 @@ class MainWindow(QtGui.QMainWindow):
                 if max_time and compare_time:
                     index = compare_time * len(data) / max_time
                     if not vline:
-                        self.ax.axvline(compare_time, linestyle='--')
+                        self.ax.axvline(data[index][0], linestyle='--')
                         vline = True
                     self.ax.axhline(data[index][1], linestyle='--')
 
