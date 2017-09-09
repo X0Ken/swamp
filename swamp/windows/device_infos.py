@@ -45,7 +45,7 @@ class Window(QtGui.QDialog):
     def reload_info(self):
         logger.debug("Reload device info list")
         self.infos.clear()
-        infos = CheckInfo.get_all_by_device(self.device.id)
+        infos = self.device.check_infos
         for info in infos:
             item = InfoListWidgetItem()
             item.setText(str(info.created_at))

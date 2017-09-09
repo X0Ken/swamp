@@ -119,21 +119,11 @@ class Window(QtGui.QDialog):
             return
 
         device = models.Device(name)
+
+        device.set_max_time(unicode(max_time))
+        device.set_compare_time(unicode(compare_time))
+        device.set_max_current(unicode(max_current))
         device.save()
-        device.settings.append(
-            models.DeviceSetting(device_id=device.id, key=models.MAX_TIME,
-                                 value=unicode(max_time))
-        )
-        device.settings.append(
-            models.DeviceSetting(device_id=device.id, key=models.COMPARE_TIME,
-                                 value=unicode(compare_time))
-        )
-        device.settings.append(
-            models.DeviceSetting(device_id=device.id,
-                                 key=models.MAX_CURRENT,
-                                 value=unicode(max_current))
-        )
-        DB().commit()
 
         logger.info("New device %s created" % device.name)
         self.parent().reload_device()

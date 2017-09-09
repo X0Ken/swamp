@@ -77,6 +77,11 @@ class Device(Base, DBMixin):
     description = Column(String)
     created_at = Column(DateTime, default=datetime.now)
 
+    settings = relationship("DeviceSetting", back_populates="device",
+                            lazy='dynamic')
+    check_infos = relationship("CheckInfo", back_populates="device",
+                               lazy='dynamic')
+
     def __repr__(self):
         return "<Device(name='%s')>" % self.name
 
@@ -97,14 +102,35 @@ class Device(Base, DBMixin):
             return _type(value)
         return value
 
+    def set_setting(self, key, value):
+        self.settings.append(
+            DeviceSetting(device_id=self.id,
+                          key=key,
+                          value=value)
+        )
+
     def get_max_time(self, default=0):
         return self.get_setting(MAX_TIME, default=default, _type=int)
+
+    def set_max_time(self, value):
+        return self.set_setting(MAX_TIME, value)
 
     def get_compare_time(self, default=0):
         return self.get_setting(COMPARE_TIME, default=default, _type=int)
 
+    def set_compare_time(self, value):
+        return self.set_setting(COMPARE_TIME, value)
+
     def get_max_current(self, default=0.0):
         return self.get_setting(MAX_CURRENT, default=default, _type=float)
+
+    def set_max_current(self, value):
+        return self.set_setting(MAX_CURRENT, value)
+
+    def destroy(self):
+        for setting in self.settings:
+            setting.destroy()
+        super(Device, self).destroy()
 
 
 class DeviceSetting(Base, DBMixin):
@@ -115,8 +141,7 @@ class DeviceSetting(Base, DBMixin):
     value = Column(String)
     created_at = Column(DateTime, default=datetime.now)
 
-    device = relationship(
-        Device, backref=backref('settings', lazy='dynamic'))
+    device = relationship(Device, back_populates="settings")
 
     def __init__(self, device_id, key=None, value=None):
         self.device_id = device_id
@@ -135,8 +160,7 @@ class CheckInfo(Base, DBMixin):
     created_at = Column(DateTime, default=datetime.now)
     data = Column(String)
 
-    device = relationship(
-        Device, backref=backref('check_infos', lazy='dynamic'))
+    device = relationship(Device, back_populates="check_infos")
 
     def __init__(self, device_id, data=None):
         self.device_id = device_id
