@@ -2,10 +2,10 @@ import sys
 
 from PyQt4 import QtGui
 
-from swamp import log
+from swamp import log, utils
 from swamp.models import DB
+from swamp.utils import load_i18n, CONF
 from swamp.windows.device_show import MainWindow
-from swamp.utils import load_i18n
 
 logger = log.get_logger()
 
@@ -13,6 +13,10 @@ logger = log.get_logger()
 def app():
     log.setup()
     logger.info("App start")
+
+    logger.info("Load config")
+    kwargs = utils.convert_args(sys.argv)
+    CONF.load(kwargs)
 
     logger.info("Create DB")
     db = DB()
