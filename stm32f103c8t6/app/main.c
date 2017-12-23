@@ -4,7 +4,7 @@
 #include "serial.h"
 #include "switch.h"
 
-#define CHECK_TIMES 500
+#define CHECK_TIMES 900
 
 
 void out_datas(char result[], int max_t){
@@ -14,6 +14,8 @@ void out_datas(char result[], int max_t){
         Serial_Send(0);
     }
 }
+
+
 void get_datas(char result[], int max_i, int max_t){
     char r[2];
     for (int i = 0; i < max_t; i++) {
@@ -66,6 +68,10 @@ int main()
               max_i |= Serial_Get();
               max_t = Serial_Get() << 8;
               max_t |= Serial_Get();
+              if(max_t > CHECK_TIMES){
+                  Serial_Send_Str("e_maxt_");
+                  break;
+              }
               Serial_Send('o');
               checkout(max_i, max_t);
               Serial_Send('o');

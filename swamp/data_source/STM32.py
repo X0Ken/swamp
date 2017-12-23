@@ -15,7 +15,6 @@ import swamp.log
 
 logger = swamp.log.get_logger()
 
-
 ERROR = '\x65'
 NULL = '\x00'
 CHECK = '\x63'
@@ -58,6 +57,15 @@ class ADSource(ADSourceBase):
     def int_2_bytes(self, i):
         return chr(i >> 8) + chr(i & 255)
 
+    def get_error(self):
+        ser = self.ser
+        c = ser.read()
+        e = ''
+        while c != '_':
+            e = e + c
+            c = ser.read()
+        return e
+
     # 获取数据
     def get_data(self, max_i=100, max_t=200):
         logger.info("data source get begin.")
@@ -68,6 +76,12 @@ class ADSource(ADSourceBase):
                   self.int_2_bytes(max_t))
         c = ser.read()
         if c != OK:
+            if c == 'e':
+                c = ser.read()
+                if c == '_':
+                    s = self.get_error()
+                    if s == 'maxt':
+                        raise Exception("Time too long")
             raise Exception("Data format error")
         logger.info("Command send success.")
         results = []
@@ -119,7 +133,7 @@ def main():
     input()
 
 
-def test():
+def test_one():
     adsys = ADSource()
     print(adsys.test())
     while True:
@@ -127,6 +141,22 @@ def test():
         time.sleep(0.5)
 
 
+def test_get():
+    adsys = ADSource()
+    print(adsys.test())
+    print(adsys.get_data(100, 200))
+    print(adsys.get_data(100, 300))
+    print(adsys.get_data(100, 500))
+    print(adsys.get_data(100, 1000))
+    print(adsys.get_data(100, 2000))
+    print(adsys.get_data(10, 2000))
+    print(adsys.get_data(1, 2000))
+    print(adsys.get_data(0, 2000))
+    print(adsys.get_data(100, 3000))
+    print(adsys.get_data(100, 4000))
+    print(adsys.get_data(100, 5000))
+
+
 # 如果直接执行当前文件，__name__变量即为字符串"__main__"
 if __name__ == "__main__":
-    test()
+    test_get()
