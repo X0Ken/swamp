@@ -19,6 +19,8 @@ ERROR = '\x65'
 NULL = '\x00'
 CHECK = '\x63'
 OK = '\x6f'
+SUM = '\x73'
+DATA = '\x64'
 
 ISOTIMEFORMAT = '%Y%m%d%H%M%S'
 
@@ -30,7 +32,7 @@ class ADSource(ADSourceBase):
     # 初始化类的函数
     def __init__(self):
         logger.info("STM32 driver init.")
-        self.ser = serial.Serial("COM3", 9600)
+        self.ser = serial.Serial("COM6", 9600)
 
     # 检测stm32的状态
     def test(self):
@@ -66,10 +68,30 @@ class ADSource(ADSourceBase):
             c = ser.read()
         return e
 
+    def _get_sum(self):
+        ser = self.ser
+        c = ser.read()
+        if c == SUM:
+            high_data = ser.read()
+            r = ord(high_data)
+            r *= 256
+            low_data = ser.read()
+            r |= ord(low_data)
+        else:
+            raise Exception("Sum error")
+        return r
+
+
     # 获取数据
     def get_data(self, max_i=100, max_t=200):
         logger.info("data source get begin.")
         ser = self.ser
+        self._send_cmd(max_i, max_t, ser)
+        count = self._get_sum()
+        results = self._get_datas(ser, count)
+        return results
+
+    def _send_cmd(self, max_i, max_t, ser):
         max_t = self.to_times(max_t)
         ser.write('\x63' +
                   self.int_2_bytes(self.to_digital(max_i)) +
@@ -84,8 +106,13 @@ class ADSource(ADSourceBase):
                         raise Exception("Time too long")
             raise Exception("Data format error")
         logger.info("Command send success.")
+
+    def _get_datas(self, ser, count):
+        c = ser.read()
+        if c != DATA:
+            raise Exception("Data format error")
         results = []
-        for i in xrange(max_t):
+        for i in xrange(count):
             r = self._get_one_data(ser)
             results.append((i * 1000 / 204, r))
         c = ser.read()

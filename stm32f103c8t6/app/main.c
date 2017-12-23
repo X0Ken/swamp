@@ -7,8 +7,12 @@
 #define CHECK_TIMES 900
 
 
-void out_datas(char result[], int max_t){
-    for (int i = 0; i < max_t; i++) {
+void out_datas(char result[], int count){
+    Serial_Send('s');
+    Serial_Send(count >> 8);
+    Serial_Send(count);
+    Serial_Send('d');
+    for (int i = 0; i < count; i++) {
         Serial_Send(result[i * 2]);
         Serial_Send(result[i * 2 + 1]);
         Serial_Send(0);
@@ -16,35 +20,38 @@ void out_datas(char result[], int max_t){
 }
 
 
-void get_datas(char result[], int max_i, int max_t){
+int get_datas(char result[], int max_i, int max_t){
     char r[2];
+    char herr=0;
     for (int i = 0; i < max_t; i++) {
         ad_get_data(r);
         result[i * 2] = r[0];
         result[i * 2 + 1] = r[1];
-        if (max_i < (result[i * 2] << 8 | result[i * 2 + 1])){
-            for (; i <  max_t; i++){
-                result[i * 2] = 0x34;
-                result[i * 2 + 1] = 0x15;
+        if (max_i < (r[0] << 8 | r[1])){
+            herr += 1;
+            if (herr > 3){
+                return i + 1;
             }
         }
     }
+    return max_t;
 }
 
 
 
 void checkout(int max_i, int max_t){
     char result[CHECK_TIMES * 2];
+    int count = 0;
     res_swtich(0);
     delay_s(1);
     power_switch(1);
 
-    get_datas(result, max_i, max_t);
+    count = get_datas(result, max_i, max_t);
     res_swtich(1);
     delay_s(1);
     power_switch(0);
 
-    out_datas(result, max_t);
+    out_datas(result, count);
 }
 
 int main()
