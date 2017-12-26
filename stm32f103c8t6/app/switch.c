@@ -16,19 +16,19 @@ void init_switch()
 
 void power_switch(int x){
     if (x) {
-        GPIO_ResetBits(GPIOA, GPIO_Pin_0);
+        GPIO_SetBits(GPIOA, GPIO_Pin_0);
     }
     else{
-        GPIO_SetBits(GPIOA, GPIO_Pin_0);
+        GPIO_ResetBits(GPIOA, GPIO_Pin_0);
     }
 }
 
 void res_swtich(int x){
 
     if (x) {
-        GPIO_ResetBits(GPIOA, GPIO_Pin_1);
+        GPIO_SetBits(GPIOA, GPIO_Pin_1);
     }
     else{
-        GPIO_SetBits(GPIOA, GPIO_Pin_1);
+        GPIO_ResetBits(GPIOA, GPIO_Pin_1);
     }
 }
