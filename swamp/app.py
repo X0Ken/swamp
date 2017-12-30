@@ -2,10 +2,12 @@ import sys
 
 from PyQt4 import QtGui
 
-from swamp import log, utils
+from swamp import log
+from swamp import utils
 from swamp.models import DB
-from swamp.utils import load_i18n, CONF
-from swamp.windows.device_show import MainWindow
+from swamp.utils import CONF
+from swamp.utils import load_i18n
+from swamp.windows.window_switch import WindowsSwitch
 
 logger = log.get_logger()
 
@@ -27,6 +29,5 @@ def app():
 
     logger.info("Start Window")
     app = QtGui.QApplication(sys.argv)
-    main = MainWindow()
-    main.show()
-    return app.exec_()
+    win = WindowsSwitch()
+    win.run()

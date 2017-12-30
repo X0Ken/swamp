@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-09-08 22:40+0800\n"
+"POT-Creation-Date: 2017-12-30 12:53+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,11 +17,38 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
+#: windows/compare_select.py:32
+msgid "Compate Infos"
+msgstr "信息比较"
+
+#: windows/compare_select.py:36 windows/device_check.py:72
+#: windows/device_compare.py:59 windows/device_infos.py:29
+msgid "Go Back"
+msgstr "返回"
+
+#: windows/compare_select.py:72
+msgid "Plesae Select first info"
+msgstr "请选择第一个信息"
+
+#: windows/compare_select.py:76
+msgid "Plesae Select second info"
+msgstr "请选择第二个信息"
+
+#: windows/compare_select.py:79
+msgid "Plesae Select different info"
+msgstr "请选择不同的信息"
+
+#: windows/compare_select.py:93 windows/create_new.py:99
+#: windows/device_check.py:109 windows/ui.py:46 windows/ui.py:52
+msgid "Message"
+msgstr "消息"
+
 #: windows/create_new.py:23
 msgid "Create New Device"
 msgstr "创建新的设备"
 
-#: windows/create_new.py:27 windows/device_show.py:84
+#: windows/create_new.py:27 windows/device_check.py:81
+#: windows/device_compare.py:68
 msgid "Name:"
 msgstr "名字："
 
@@ -34,151 +61,183 @@ msgid "Max T(ms):"
 msgstr "最大测量时间（ms）："
 
 #: windows/create_new.py:42
-msgid "Compare T(ms):"
-msgstr "比较时间（ms）："
-
-#: windows/create_new.py:47
 msgid "Submit"
 msgstr "提交"
 
-#: windows/create_new.py:50 windows/device_infos.py:30
-#: windows/device_select.py:35
+#: windows/create_new.py:45
 msgid "Cancel"
 msgstr "取消"
 
-#: windows/create_new.py:74
+#: windows/create_new.py:67
 msgid "You need to input a name!"
 msgstr "你需要输入一个名字！"
 
-#: windows/create_new.py:76
+#: windows/create_new.py:69
 msgid "This name has been used. Pleas input another!"
 msgstr "这个名字已经被使用了，请换一个"
 
-#: windows/create_new.py:83
+#: windows/create_new.py:76
 msgid "Max current must be a number!"
 msgstr "最大励磁电流必须是一个数字！"
 
-#: windows/create_new.py:85
+#: windows/create_new.py:78
 msgid "Max current must more than 0!"
 msgstr "最大励磁电流必须大于0！"
 
-#: windows/create_new.py:91
+#: windows/create_new.py:84
 msgid "Max time must be a number!"
 msgstr "最大测量时间必须是一个整数！"
 
-#: windows/create_new.py:93
+#: windows/create_new.py:86
 msgid "Max time must more than 0!"
 msgstr "最大测量时间必须大于0！"
 
-#: windows/create_new.py:99
-msgid "Compare time must be a number!"
-msgstr "比较时间必须是一个整数！"
-
-#: windows/create_new.py:101
-msgid "Compare time must more than 0, and less then Max time!"
-msgstr "比较时间必须在0和最大测量时间中间取值！"
-
-#: windows/create_new.py:117 windows/device_show.py:156
-#: windows/device_show.py:164 windows/device_show.py:182
-#: windows/device_show.py:193
-msgid "Message"
-msgstr "消息"
-
-#: windows/device_infos.py:22
-msgid "Device Info List"
-msgstr "设备信息列表"
-
-#: windows/device_infos.py:27
-msgid "Remove"
-msgstr "移除"
-
-#: windows/device_select.py:21
-msgid "Device Select"
-msgstr "选择设备"
-
-#: windows/device_select.py:26
-msgid "Select"
-msgstr "选择"
-
-#: windows/device_select.py:29
-msgid "Delete"
-msgstr "删除"
-
-#: windows/device_select.py:32
-msgid "Create"
-msgstr "创建"
-
-#: windows/device_show.py:27
-msgid "Device Detail"
-msgstr "设备详情"
-
-#: windows/device_show.py:56
-msgid "Please select device."
-msgstr "请先选择一个设备。"
-
-#: windows/device_show.py:63
-msgid "Select Device"
-msgstr "选择设备"
-
-#: windows/device_show.py:67
+#: windows/device_check.py:61
 msgid "Get New Device Info"
 msgstr "获取设备信息"
 
-#: windows/device_show.py:71
-msgid "Delete Line"
-msgstr "删除线"
+#: windows/device_check.py:66
+msgid "Save Info"
+msgstr "保存信息"
 
-#: windows/device_show.py:75
-msgid "Exit"
-msgstr "退出"
-
-#: windows/device_show.py:90
-msgid "Diagnosis:"
-msgstr "诊断："
-
-#: windows/device_show.py:96
+#: windows/device_check.py:87
 msgid "Max current value:"
 msgstr "最大励磁电流："
 
-#: windows/device_show.py:102
+#: windows/device_check.py:93
 msgid "Max time:"
 msgstr "最大测量时间："
 
-#: windows/device_show.py:108
-msgid "Compare time:"
-msgstr "比较时间："
-
-#: windows/device_show.py:156 windows/device_show.py:182
+#: windows/device_check.py:109
 msgid "Data source error"
 msgstr "数据源错误"
 
-#: windows/device_show.py:164 windows/device_show.py:193
-msgid "You need to select device!"
-msgstr "你需要选择一个设备"
+#: windows/device_check.py:115
+msgid "Error"
+msgstr "错误"
 
-#: windows/device_show.py:204
-msgid "Insufficient data"
-msgstr "数据不足"
+#: windows/device_check.py:115
+msgid "Unknow Error"
+msgstr "未知错误"
 
-#: windows/device_show.py:225
-msgid "Health"
-msgstr "健康"
+#: windows/device_check.py:130
+msgid "Name input"
+msgstr "请输入名字"
 
-#: windows/device_show.py:227
-msgid "Fault"
-msgstr "故障"
+#: windows/device_check.py:130
+msgid "name: "
+msgstr "名字："
 
-#: windows/device_show.py:241 windows/device_show.py:244
+#: windows/device_check.py:134
+msgid "Please inpute another name"
+msgstr "请输入一个其他的名字"
+
+#: windows/device_check.py:145
 #, python-format
 msgid "%s ms"
-msgstr ""
+msgstr "%s ms"
 
-#: windows/device_show.py:247
+#: windows/device_check.py:147
 #, python-format
 msgid "%s A"
 msgstr "%s A"
 
-#: windows/device_show.py:249
-#, python-format
-msgid "Device: %s"
-msgstr "设备：%s"
+#: windows/device_infos.py:26
+msgid "Remove"
+msgstr "移除"
+
+#: windows/device_infos.py:58 windows/device_select.py:119
+msgid "Are you sure to delete it?"
+msgstr "你确认要删除它吗？"
+
+#: windows/device_infos.py:66
+msgid "Info not selected"
+msgstr "没有选择任何信息"
+
+#: windows/device_select.py:17
+msgid "No device selected!"
+msgstr "没有选择任何设备"
+
+#: windows/device_select.py:30
+msgid "Check Device"
+msgstr "检测设备"
+
+#: windows/device_select.py:34
+msgid "Analyse Device"
+msgstr "分析设备"
+
+#: windows/device_select.py:38
+msgid "ADD Device"
+msgstr "增加设备"
+
+#: windows/device_select.py:42
+msgid "Manager Device"
+msgstr "管理设备信息"
+
+#: windows/device_select.py:46
+msgid "Delete Device"
+msgstr "删除设备"
+
+#: windows/device_select.py:50
+msgid "Exit System"
+msgstr "退出系统"
+
+#~ msgid "Diagnosis:"
+#~ msgstr "诊断："
+
+#~ msgid "Compare T(ms):"
+#~ msgstr "比较时间（ms）："
+
+#~ msgid "Compare time must be a number!"
+#~ msgstr "比较时间必须是一个整数！"
+
+#~ msgid "Compare time must more than 0, and less then Max time!"
+#~ msgstr "比较时间必须在0和最大测量时间中间取值！"
+
+#~ msgid "Device Info List"
+#~ msgstr "设备信息列表"
+
+#~ msgid "Device Select"
+#~ msgstr "选择设备"
+
+#~ msgid "Select"
+#~ msgstr "选择"
+
+#~ msgid "Delete"
+#~ msgstr "删除"
+
+#~ msgid "Create"
+#~ msgstr "创建"
+
+#~ msgid "Device Detail"
+#~ msgstr "设备详情"
+
+#~ msgid "Please select device."
+#~ msgstr "请先选择一个设备。"
+
+#~ msgid "Select Device"
+#~ msgstr "选择设备"
+
+#~ msgid "Delete Line"
+#~ msgstr "删除线"
+
+#~ msgid "Exit"
+#~ msgstr "退出"
+
+#~ msgid "Compare time:"
+#~ msgstr "比较时间："
+
+#~ msgid "You need to select device!"
+#~ msgstr "你需要选择一个设备"
+
+#~ msgid "Insufficient data"
+#~ msgstr "数据不足"
+
+#~ msgid "Health"
+#~ msgstr "健康"
+
+#~ msgid "Fault"
+#~ msgstr "故障"
+
+#~ msgid "Device: %s"
+#~ msgstr "设备：%s"

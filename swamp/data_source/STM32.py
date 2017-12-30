@@ -5,16 +5,18 @@
 平均每个点的测量时间为0.0049s。
 1s能测量204个点。
 """
-import serial
 import json
+import sys
 import time
 
-# 定义全局变量
+import serial
+
 from swamp.data_source.base import ADSourceBase
 import swamp.log
 
 logger = swamp.log.get_logger()
 
+# 定义全局变量
 ERROR = '\x65'
 NULL = '\x00'
 CHECK = '\x63'
@@ -32,7 +34,11 @@ class ADSource(ADSourceBase):
     # 初始化类的函数
     def __init__(self):
         logger.info("STM32 driver init.")
-        self.ser = serial.Serial("COM6", 9600)
+        if sys.platform.find("linux2") > -1:
+            serial_port = "/dev/ttyUSB0"
+        else:
+            serial_port = "COM6"
+        self.ser = serial.Serial(serial_port, 9600)
 
     # 检测stm32的状态
     def test(self):
@@ -86,10 +92,17 @@ class ADSource(ADSourceBase):
     def get_data(self, max_i=100, max_t=200):
         logger.info("data source get begin.")
         ser = self.ser
+        self._check_input(max_i, max_t)
         self._send_cmd(max_i, max_t, ser)
         count = self._get_sum()
         results = self._get_datas(ser, count)
         return results
+
+    def _check_input(self, max_i, max_t):
+        if max_i > 50 or max_i < 1:
+            raise Exception("current mast more then 1 and less then 50")
+        if max_t > 4000 or max_t < 300:
+            raise Exception("current mast more then 300 and less then 4000")
 
     def _send_cmd(self, max_i, max_t, ser):
         max_t = self.to_times(max_t)
@@ -118,6 +131,7 @@ class ADSource(ADSourceBase):
         c = ser.read()
         if c != OK:
             raise Exception("Data format error")
+        logger.info("data source get success.")
         return results
 
     def get_one_data(self):

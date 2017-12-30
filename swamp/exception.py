@@ -1,4 +1,4 @@
-from  swamp import log
+from swamp import log
 
 logger = log.get_logger()
 

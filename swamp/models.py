@@ -1,10 +1,14 @@
-import json
 from datetime import datetime
+import json
 
-from sqlalchemy import Column, Integer, String, ForeignKey, DateTime
+from sqlalchemy import Column
+from sqlalchemy import DateTime
+from sqlalchemy import ForeignKey
+from sqlalchemy import Integer
+from sqlalchemy import String
 from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import relationship, backref
+from sqlalchemy.orm import relationship
 from sqlalchemy.orm.session import Session
 
 from swamp import exception
@@ -16,7 +20,6 @@ logger = log.get_logger()
 Base = declarative_base()
 
 MAX_TIME = 'max_time'
-COMPARE_TIME = 'compare_time'
 MAX_CURRENT = 'max_current'
 
 
@@ -115,12 +118,6 @@ class Device(Base, DBMixin):
     def set_max_time(self, value):
         return self.set_setting(MAX_TIME, value)
 
-    def get_compare_time(self, default=0):
-        return self.get_setting(COMPARE_TIME, default=default, _type=int)
-
-    def set_compare_time(self, value):
-        return self.set_setting(COMPARE_TIME, value)
-
     def get_max_current(self, default=0.0):
         return self.get_setting(MAX_CURRENT, default=default, _type=float)
 
@@ -158,6 +155,7 @@ class CheckInfo(Base, DBMixin):
     id = Column(Integer, primary_key=True)
     device_id = Column(Integer, ForeignKey('devices.id'))
     created_at = Column(DateTime, default=datetime.now)
+    name = Column(String)
     data = Column(String)
 
     device = relationship(Device, back_populates="check_infos")
@@ -177,10 +175,14 @@ class CheckInfo(Base, DBMixin):
         else:
             raise exception.DataSourceGetError
         info = cls(device_id=device_id, data=json.dumps(data))
-        info.save()
         return info
 
     @classmethod
     def get_all_by_device(cls, device_id):
         session = Session(DB().engine)
         return session.query(cls).filter_by(device_id=device_id)
+
+    @classmethod
+    def name_exist(cls, name):
+        session = Session(DB().engine)
+        return session.query(cls).filter_by(name=name).all()

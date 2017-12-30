@@ -1,33 +1,32 @@
-from PyQt4 import QtGui, QtCore
+from PyQt4 import QtGui
 
 from swamp import log
-from swamp.models import CheckInfo
-from swamp.windows.ui import PushButton
+from swamp.utils import _
+from swamp.windows.ui import BigPushButton
+from swamp.windows.ui import InfoListWidgetItem
+from swamp.windows.ui import ListWidget
+from swamp.windows.ui import WinidowsBase
+from swamp.windows.ui import ask
+from swamp.windows.ui import warring
 
 logger = log.get_logger()
 
 
-class InfoListWidgetItem(QtGui.QListWidgetItem):
-    info = None
-
-
-class Window(QtGui.QDialog):
+class DeviceInfos(WinidowsBase):
     device = None
     infos = None
 
     def __init__(self, parent=None, device=None):
-        super(Window, self).__init__(parent)
+        super(DeviceInfos, self).__init__(parent)
         self.device = device
 
-        self.setWindowTitle(_("Device Info List"))
-
-        infos = QtGui.QListWidget()
+        infos = ListWidget()
         self.infos = infos
 
-        delete_btn = PushButton(_('Remove'))
+        delete_btn = BigPushButton(_('Remove'))
         delete_btn.clicked.connect(self.remove_clicked)
 
-        cancel_btn = PushButton(_('Cancel'))
+        cancel_btn = BigPushButton(_('Go Back'))
         cancel_btn.clicked.connect(self.close)
 
         hbox = QtGui.QHBoxLayout()
@@ -48,18 +47,20 @@ class Window(QtGui.QDialog):
         infos = self.device.check_infos
         for info in infos:
             item = InfoListWidgetItem()
-            item.setText(str(info.created_at))
+            item.setText(info.name)
             item.info = info
             self.infos.addItem(item)
 
     def remove_clicked(self):
         logger.debug("Remove info from list")
-        info = self.infos.currentItem().info
-        logger.info("Delete info %s from device %s",
-                    str(info), self.device.name)
-        info.destroy()
-        self.reload_info()
-
-    def close(self):
-        self.parent().load_all_data()
-        super(Window, self).close()
+        selected_infos = self.infos.selectedItems()
+        if selected_infos:
+            if not ask(self, _("Are you sure to delete it?")):
+                return
+            info = selected_infos[0].info
+            logger.info("Delete info %s from device %s",
+                        str(info), self.device.name)
+            info.destroy()
+            self.reload_info()
+        else:
+            warring(self, _("Info not selected"))

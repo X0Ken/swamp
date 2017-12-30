@@ -1,5 +1,4 @@
 import gettext
-
 import sys
 import traceback
 
@@ -15,6 +14,7 @@ class Singleton(object):
 
 class Config(Singleton):
     data_source = "swamp.data_source.STM32.ADSource"
+    with_exit = False
 
     def load(self, kwargs):
         for k, v in kwargs.items():
@@ -51,7 +51,12 @@ def load_i18n():
     locale_path = './locale/'
     zh_trans = gettext.translation('i18n', locale_path, languages=['zh_CN'])
     # en_trans = gettext.translation('i18n', locale_path, languages=['en_US'])
-    zh_trans.install(unicode=True)
+    # zh_trans.install(unicode=True)
+    print("------------------------------")
+    return zh_trans
+
+
+_ = load_i18n().ugettext
 
 
 def import_class(import_str):

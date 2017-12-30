@@ -8,19 +8,25 @@
 # may be distributed without limitation.
 
 from __future__ import unicode_literals
-import sys
+
 import os
 import random
+import sys
+
 from matplotlib.backends import qt_compat
+from matplotlib.backends.backend_qt4agg import \
+    FigureCanvasQTAgg as FigureCanvas
+from matplotlib.figure import Figure
+from numpy import arange
+from numpy import pi
+from numpy import sin
+
 use_pyside = qt_compat.QT_API == qt_compat.QT_API_PYSIDE
 if use_pyside:
     from PySide import QtGui, QtCore
 else:
     from PyQt4 import QtGui, QtCore
 
-from numpy import arange, sin, pi
-from matplotlib.backends.backend_qt4agg import FigureCanvasQTAgg as FigureCanvas
-from matplotlib.figure import Figure
 
 progname = os.path.basename(sys.argv[0])
 progversion = "0.1"

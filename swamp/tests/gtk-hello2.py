@@ -2,9 +2,10 @@
 
 # example helloworld2.py
 
-import pygtk
-pygtk.require('2.0')
 import gtk
+import pygtk
+
+pygtk.require('2.0')
 
 class HelloWorld2:
 

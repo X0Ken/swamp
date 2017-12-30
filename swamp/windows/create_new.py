@@ -1,25 +1,25 @@
 import subprocess
 
-from PyQt4 import QtGui, QtCore
+from PyQt4 import QtGui
 from PyQt4.QtGui import QMessageBox
 
+from swamp import exception
 from swamp import log
 from swamp import models
-from swamp.models import DB
-from swamp.windows.ui import PushButton
-from swamp import exception
+from swamp.utils import _
+from swamp.windows.ui import BigPushButton
+from swamp.windows.ui import SwitchWindowsBase
 
 logger = log.get_logger()
 
 
-class Window(QtGui.QDialog):
+class Window(SwitchWindowsBase):
     name = None
     max_time = None
     keyboard = None
 
     def __init__(self, parent=None):
         super(Window, self).__init__(parent)
-
         self.setWindowTitle(_("Create New Device"))
 
         grid = QtGui.QGridLayout()
@@ -39,15 +39,10 @@ class Window(QtGui.QDialog):
         grid.addWidget(max_time_label, 2, 0)
         grid.addWidget(self.max_time, 2, 1)
 
-        compare_time_label = QtGui.QLabel(_("Compare T(ms):"))
-        self.compare_time = QtGui.QLineEdit()
-        grid.addWidget(compare_time_label, 3, 0)
-        grid.addWidget(self.compare_time, 3, 1)
-
-        select_btn = PushButton(_('Submit'))
+        select_btn = BigPushButton(_('Submit'))
         select_btn.clicked.connect(self.select_clicked)
 
-        cancel_btn = PushButton(_('Cancel'))
+        cancel_btn = BigPushButton(_('Cancel'))
         cancel_btn.clicked.connect(self.close)
 
         hbox = QtGui.QHBoxLayout()
@@ -63,9 +58,7 @@ class Window(QtGui.QDialog):
 
         try:
             logger.debug("run matchbox-keyboard")
-            self.keyboard = subprocess.Popen(['matchbox-keyboard',
-                                              '-s',
-                                              '50'])
+            self.keyboard = subprocess.Popen(['matchbox-keyboard',])
         except Exception as e:
             logger.warning(e)
 
@@ -92,25 +85,14 @@ class Window(QtGui.QDialog):
         if max_time <= 0:
             raise exception.InvalidError(_("Max time must more than 0!"))
 
-    def check_compare_time(self, compare_time, max_time):
-        try:
-            compare_time = int(compare_time)
-        except ValueError:
-            raise exception.InvalidError(_("Compare time must be a number!"))
-        if compare_time <= 0 or compare_time > int(max_time):
-            raise exception.InvalidError(_("Compare time must more than 0,"
-                                           " and less then Max time!"))
-
     def select_clicked(self):
         logger.debug("Device select button clicked")
         name = unicode(self.name.text())
         max_time = unicode(self.max_time.text())
-        compare_time = unicode(self.compare_time.text())
         max_current = unicode(self.max_current.text())
         try:
             self.check_name(name)
             self.check_max_time(max_time)
-            self.check_compare_time(compare_time, max_time)
             self.check_max_current(max_current)
         except exception.InvalidError as e:
             QMessageBox.warning(
@@ -121,16 +103,18 @@ class Window(QtGui.QDialog):
         device = models.Device(name)
 
         device.set_max_time(unicode(max_time))
-        device.set_compare_time(unicode(compare_time))
         device.set_max_current(unicode(max_current))
         device.save()
 
         logger.info("New device %s created" % device.name)
-        self.parent().reload_device()
-        self.close()
+        win = self.parent()
+        win.go_home()
+        self.accept()
 
     def close(self):
         logger.debug("kill matchbox-keyboard")
         if self.keyboard:
             self.keyboard.kill()
-        super(Window, self).close()
+        win = self.parent()
+        win.go_home()
+        self.accept()

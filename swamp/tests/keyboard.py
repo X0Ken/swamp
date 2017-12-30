@@ -3,10 +3,10 @@
 # example helloworld.py
 import subprocess
 
+import gtk
 import pygtk
 
 pygtk.require('2.0')
-import gtk
 
 
 class TextEntry(gtk.Entry):
