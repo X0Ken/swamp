@@ -6,6 +6,7 @@ from swamp.windows.device_check import DeviceCheck
 from swamp.windows.device_compare import DeviceCompare
 from swamp.windows.device_infos import DeviceInfos
 from swamp.windows.device_select import DeviceSelectWindow
+from swamp.windows.save_info import SaveDeviceInfoWindow
 
 
 class WindowsSwitch(QtGui.QDialog):
@@ -55,4 +56,10 @@ class WindowsSwitch(QtGui.QDialog):
         self.next_win = DeviceInfos
         self.kwargs = {
             'device': device
+        }
+
+    def go_save_device_info(self, info):
+        self.next_win = SaveDeviceInfoWindow
+        self.kwargs = {
+            'info': info
         }

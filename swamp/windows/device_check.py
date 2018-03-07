@@ -24,6 +24,7 @@ logger = log.get_logger()
 class DeviceCheck(WinidowsBase):
     device = None
     _info = None
+    no_selected_err_msg = _('No device info!')
 
     def __init__(self, parent=None, device=None):
         super(DeviceCheck, self).__init__(parent)
@@ -129,16 +130,14 @@ class DeviceCheck(WinidowsBase):
         self.save_info_btn.setDisabled(False)
 
     def save_info_click(self):
-        # QString, QString, QLineEdit.EchoMode, QString, Qt.WindowFlags, Qt.InputMethodHints
-        name, ign = QInputDialog.getText(self, _("Name input"), _("name: "), QLineEdit.Normal)
-        if ign and name:
-            name = unicode(name)
-            if self._info.name_exist(name):
-                warring(self, _("Please inpute another name"))
-            else:
-                self._info.name = name
-                self._info.save()
-                self.save_info_btn.setDisabled(True)
+        logger.debug("save device info button clicked")
+        if self._info:
+            win = self.parent()
+            win.go_save_device_info(self._info)
+            self.accept()
+        else:
+            warring(self, self.no_selected_err_msg)
+
 
     def set_device(self):
         device = self.device
