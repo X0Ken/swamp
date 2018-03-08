@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 import json
 
 from PyQt4 import QtGui
@@ -28,7 +30,13 @@ class DeviceCompare(WinidowsBase):
         self.ax = self.figure.add_subplot(111)
         self._draw_info(info)
         self._draw_info(info2)
+        self.calculator_t(info, info2)
         self.canvas.draw()
+
+    def calculator_t(self, info1, info2):
+        x = json.loads(info1.data)[-1][0]
+        y = json.loads(info2.data)[-1][0]
+        self.t_value.setText("{} ms".format(abs(x-y)))
 
     def _init_ui(self):
         self.figure = plt.figure()
@@ -69,7 +77,12 @@ class DeviceCompare(WinidowsBase):
         device_name = QtGui.QLabel("")
         label_grid.addWidget(name_lable, 0, 0)
         label_grid.addWidget(device_name, 0, 1)
+        t_lable = QtGui.QLabel(_("Δt:".decode('utf-8')))
+        t_value = QtGui.QLabel("")
+        label_grid.addWidget(t_lable, 1, 0)
+        label_grid.addWidget(t_value, 1, 1)
         self.device_name = device_name
+        self.t_value = t_value
         return label_grid
 
     def _draw_info(self, info):
