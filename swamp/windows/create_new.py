@@ -95,12 +95,17 @@ class Window(SwitchWindowsBase):
         logger.info("New device %s created" % device.name)
         win = self.parent()
         win.go_home()
+        self.close_keyboard()
         self.accept()
 
     def close(self):
         logger.debug("kill matchbox-keyboard")
-        if self.keyboard:
-            self.keyboard.kill()
+        self.close_keyboard()
         win = self.parent()
         win.go_home()
         self.accept()
+
+    def close_keyboard(self):
+        if self.keyboard:
+            self.keyboard.kill()
+            self.keyboard = None

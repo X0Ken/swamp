@@ -63,15 +63,19 @@ class SaveDeviceInfoWindow(SwitchWindowsBase):
             return
         self._info.name = name
         self._info.save()
-
+        self.close_keyboard()
         win = self.parent()
         win.go_home()
         self.accept()
 
     def close(self):
-        logger.debug("kill matchbox-keyboard")
-        if self.keyboard:
-            self.keyboard.kill()
+        self.close_keyboard()
         win = self.parent()
         win.go_home()
         self.accept()
+
+    def close_keyboard(self):
+        logger.debug("kill matchbox-keyboard")
+        if self.keyboard:
+            self.keyboard.kill()
+            self.keyboard = None
