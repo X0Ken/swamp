@@ -34,11 +34,6 @@ class Window(SwitchWindowsBase):
         grid.addWidget(max_current_label, 1, 0)
         grid.addWidget(self.max_current, 1, 1)
 
-        max_time_label = QtGui.QLabel(_("Max T(ms):"))
-        self.max_time = QtGui.QLineEdit()
-        grid.addWidget(max_time_label, 2, 0)
-        grid.addWidget(self.max_time, 2, 1)
-
         select_btn = BigPushButton(_('Submit'))
         select_btn.clicked.connect(self.select_clicked)
 
@@ -77,22 +72,13 @@ class Window(SwitchWindowsBase):
         if max_current <= 0:
             raise exception.InvalidError(_("Max current must more than 0!"))
 
-    def check_max_time(self, max_time):
-        try:
-            max_time = int(max_time)
-        except ValueError:
-            raise exception.InvalidError(_("Max time must be a number!"))
-        if max_time <= 0:
-            raise exception.InvalidError(_("Max time must more than 0!"))
-
     def select_clicked(self):
         logger.debug("Device select button clicked")
         name = unicode(self.name.text())
-        max_time = unicode(self.max_time.text())
+        max_time = '4000'
         max_current = unicode(self.max_current.text())
         try:
             self.check_name(name)
-            self.check_max_time(max_time)
             self.check_max_current(max_current)
         except exception.InvalidError as e:
             QMessageBox.warning(
