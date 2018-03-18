@@ -1,3 +1,4 @@
+import signal
 import sys
 
 from PyQt4 import QtGui
@@ -12,7 +13,12 @@ from swamp.windows.window_switch import WindowsSwitch
 logger = log.get_logger()
 
 
+def signal_term_handler(signal, frame):
+    sys.exit(0)
+
+
 def app():
+    signal.signal(signal.SIGTERM, signal_term_handler)
     log.setup()
     logger.info("App start")
 

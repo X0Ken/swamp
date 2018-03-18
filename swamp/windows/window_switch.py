@@ -1,11 +1,12 @@
 from PyQt4 import QtGui
 
 from swamp.windows.compare_select import CompareSelectWindow
-from swamp.windows.create_new import Window as CreateWindow
+from swamp.windows.create_new import CreateNewWindow as CreateWindow
 from swamp.windows.device_check import DeviceCheck
 from swamp.windows.device_compare import DeviceCompare
 from swamp.windows.device_infos import DeviceInfos
 from swamp.windows.device_select import DeviceSelectWindow
+from swamp.windows.logo import LogoWindow
 from swamp.windows.save_info import SaveDeviceInfoWindow
 
 
@@ -16,7 +17,7 @@ class WindowsSwitch(QtGui.QDialog):
 
     def __init__(self):
         super(WindowsSwitch, self).__init__()
-        self.next_win = DeviceSelectWindow
+        self.next_win = LogoWindow
         self.kwargs = {}
 
     def run(self):
@@ -40,12 +41,11 @@ class WindowsSwitch(QtGui.QDialog):
             'device': device
         }
 
-    def go_compare_device(self, device, info, info2):
+    def go_compare_device(self, device, infos):
         self.next_win = DeviceCompare
         self.kwargs = {
             'device': device,
-            'info': info,
-            'info2': info2,
+            'infos': infos
         }
 
     def go_create_device(self):

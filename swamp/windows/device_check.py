@@ -14,14 +14,15 @@ from swamp import exception
 from swamp import log
 from swamp import models
 from swamp.utils import _
-from swamp.windows.ui import BigPushButton
-from swamp.windows.ui import WinidowsBase
+from swamp.windows.asyncio import coroutine, AsyncTask
+from swamp.windows.ui import BigPushButton, BigLabel
+from swamp.windows.ui import WindowsBase
 from swamp.windows.ui import warring
 
 logger = log.get_logger()
 
 
-class DeviceCheck(WinidowsBase):
+class DeviceCheck(WindowsBase):
     device = None
     _info = None
     no_selected_err_msg = _('No device info!')
@@ -82,32 +83,38 @@ class DeviceCheck(WinidowsBase):
     def init_info_area(self):
         # label grid
         label_grid = QtGui.QGridLayout()
-        name_lable = QtGui.QLabel(_("Name:"))
-        device_name = QtGui.QLabel("")
+        name_lable = BigLabel(_("Name:"))
+        device_name = BigLabel("")
         label_grid.addWidget(name_lable, 0, 0)
         label_grid.addWidget(device_name, 0, 1)
         self.device_name = device_name
 
-        max_current_label = QtGui.QLabel(_("Max current value:"))
-        max_current = QtGui.QLabel("")
+        max_current_label = BigLabel(_("Max current value:"))
+        max_current = BigLabel("")
         label_grid.addWidget(max_current_label, 2, 0)
         label_grid.addWidget(max_current, 2, 1)
         self.max_current = max_current
 
-        max_time_label = QtGui.QLabel(_("Max time:"))
-        max_time = QtGui.QLabel("")
+        max_time_label = BigLabel(_("Max time:"))
+        max_time = BigLabel("")
         label_grid.addWidget(max_time_label, 3, 0)
         label_grid.addWidget(max_time, 3, 1)
         self.max_time = max_time
 
         return label_grid
 
-    def check_btn_click(self):
+    def check(self, device_id, max_i, max_t):
+        info = models.CheckInfo.get_new(device_id, max_i, max_t)
+        return info
+
+    @coroutine
+    def check_btn_click(self, arg):
         logger.debug("Check device btn clicked.")
+        self.get_info_btn.setDisabled(True)
         try:
             max_t = self.device.get_max_time(default=200)
             max_i = self.device.get_max_current(default=40.0)
-            info = models.CheckInfo.get_new(self.device.id, max_i, max_t)
+            info = yield AsyncTask(self.check, self.device.id, max_i, max_t)
         except exception.DataSourceGetError:
             QMessageBox.warning(
                 self, _('Message'), _("Data source error"),
@@ -127,6 +134,7 @@ class DeviceCheck(WinidowsBase):
                      '.-', label=str(info))
         self.canvas.draw()
         self._info = info
+        self.get_info_btn.setDisabled(False)
         self.save_info_btn.setDisabled(False)
 
     def save_info_click(self):

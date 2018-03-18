@@ -11,32 +11,35 @@ import matplotlib.pyplot as plt
 
 from swamp import log
 from swamp.utils import _
-from swamp.windows.ui import BigPushButton
-from swamp.windows.ui import WinidowsBase
+from swamp.windows.ui import BigPushButton, BigLabel
+from swamp.windows.ui import WindowsBase
 
 logger = log.get_logger()
 
 
-class DeviceCompare(WinidowsBase):
+class DeviceCompare(WindowsBase):
+    device = None
+    infos = None
 
-    def __init__(self, parent=None, device=None, info=None, info2=None):
+    def __init__(self, parent=None, device=None, infos=None):
         super(DeviceCompare, self).__init__(parent)
         self.device = device
+        self.infos = infos
         self._init_ui()
-        self._draw_infos(info, info2)
+        self._draw_infos(infos)
         self.set_device(device)
 
-    def _draw_infos(self, info, info2):
+    def _draw_infos(self, infos):
         self.ax = self.figure.add_subplot(111)
-        self._draw_info(info)
-        self._draw_info(info2)
-        self.calculator_t(info, info2)
+        for info in infos:
+            self._draw_info(info)
+        if len(self.infos) > 1:
+            self.calculator_t(infos)
         self.canvas.draw()
 
-    def calculator_t(self, info1, info2):
-        x = json.loads(info1.data)[-1][0]
-        y = json.loads(info2.data)[-1][0]
-        self.t_value.setText("{} ms".format(abs(x-y)))
+    def calculator_t(self, infos):
+        ts = map(lambda info: json.loads(info.data)[-1][0], infos)
+        self.t_value.setText("{} ms".format(max(ts)-min(ts)))
 
     def _init_ui(self):
         self.figure = plt.figure()
@@ -73,16 +76,24 @@ class DeviceCompare(WinidowsBase):
     def init_info_area(self):
         # label grid
         label_grid = QtGui.QGridLayout()
-        name_lable = QtGui.QLabel(_("Name:"))
-        device_name = QtGui.QLabel("")
+        name_lable = BigLabel(_("Device Name:"))
+        device_name = BigLabel("")
+        self.device_name = device_name
         label_grid.addWidget(name_lable, 0, 0)
         label_grid.addWidget(device_name, 0, 1)
-        t_lable = QtGui.QLabel(_("Δt:".decode('utf-8')))
-        t_value = QtGui.QLabel("")
-        label_grid.addWidget(t_lable, 1, 0)
-        label_grid.addWidget(t_value, 1, 1)
-        self.device_name = device_name
-        self.t_value = t_value
+
+        if len(self.infos) > 1:
+            t_lable = BigLabel(_("dt:"))
+            t_value = BigLabel("")
+            label_grid.addWidget(t_lable, 1, 0)
+            label_grid.addWidget(t_value, 1, 1)
+            self.t_value = t_value
+        else:
+            tname_lable = BigLabel(_("Test Name:"))
+            tname_value = BigLabel(self.infos[0].name)
+            label_grid.addWidget(tname_lable, 1, 0)
+            label_grid.addWidget(tname_value, 1, 1)
+
         return label_grid
 
     def _draw_info(self, info):

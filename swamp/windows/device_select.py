@@ -1,12 +1,14 @@
+import subprocess
+
 from PyQt4 import QtGui
 
 from swamp import log
 from swamp.models import Device
 from swamp.utils import CONF
 from swamp.utils import _
-from swamp.windows.ui import BigPushButton
+from swamp.windows.ui import BigPushButton, SuperButton
 from swamp.windows.ui import DeviceListWidgetItem
-from swamp.windows.ui import FullWinidowsBase
+from swamp.windows.ui import WindowsBase
 from swamp.windows.ui import ListWidget
 from swamp.windows.ui import ask
 from swamp.windows.ui import warring
@@ -14,7 +16,8 @@ from swamp.windows.ui import warring
 logger = log.get_logger()
 
 
-class DeviceSelectWindow(FullWinidowsBase):
+class DeviceSelectWindow(WindowsBase):
+    with_out_close = False
     no_selected_err_msg = _('No device selected!')
 
     def __init__(self, parent=None):
@@ -26,31 +29,34 @@ class DeviceSelectWindow(FullWinidowsBase):
         self.list_widget = list_widget
 
         vbox = QtGui.QVBoxLayout()
-        vbox.addStretch(1)
 
-        select_btn = BigPushButton(_('Check Device'))
+        select_btn = SuperButton(_('Start the test'))
         select_btn.clicked.connect(self.on_check_clicked)
         vbox.addWidget(select_btn)
 
-        compare_device_btn = BigPushButton(_('Analyse Device'))
-        compare_device_btn.clicked.connect(self.on_compare_device)
-        vbox.addWidget(compare_device_btn)
-
-        create_btn = BigPushButton(_('ADD Device'))
+        create_btn = BigPushButton(_('New test equipment'))
         create_btn.clicked.connect(self.on_create_clicked)
         vbox.addWidget(create_btn)
 
-        manager_btn = BigPushButton(_('Manager Device'))
-        manager_btn.clicked.connect(self.on_manager_clicked)
-        vbox.addWidget(manager_btn)
-
-        delete_btn = BigPushButton(_('Delete Device'))
+        delete_btn = BigPushButton(_('Remove test equipment'))
         delete_btn.clicked.connect(self.on_delete_clicked)
         vbox.addWidget(delete_btn)
 
-        exit_btn = BigPushButton(_('Exit System'))
-        exit_btn.clicked.connect(self.close)
-        if CONF.with_exit:
+        compare_device_btn = BigPushButton(_('Analysis of test data'))
+        compare_device_btn.clicked.connect(self.on_compare_device)
+        vbox.addWidget(compare_device_btn)
+
+        manager_btn = BigPushButton(_('Management test data'))
+        manager_btn.clicked.connect(self.on_manager_clicked)
+        vbox.addWidget(manager_btn)
+
+        if not CONF.with_exit:
+            exit_btn = BigPushButton(_('Power Off'))
+            exit_btn.clicked.connect(self.on_power_off)
+            vbox.addWidget(exit_btn)
+        else:
+            exit_btn = BigPushButton(_('Exit System'))
+            exit_btn.clicked.connect(self.close)
             vbox.addWidget(exit_btn)
 
         hbox.addLayout(vbox)
@@ -124,3 +130,8 @@ class DeviceSelectWindow(FullWinidowsBase):
             self.reload_device()
         else:
             warring(self, self.no_selected_err_msg)
+
+    def on_power_off(self):
+        self.close()
+        subprocess.Popen(['sudo', 'shutdown', "-t", "now"])
+

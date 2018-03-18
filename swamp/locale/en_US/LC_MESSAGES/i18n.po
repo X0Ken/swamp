@@ -8,107 +8,168 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-08-31 00:01+0800\n"
+"POT-Creation-Date: 2018-03-18 17:10+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: \n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: windows/create_new.py:20
-msgid "Create New Device"
+#: windows/compare_select.py:30
+msgid "Compate Infos"
 msgstr ""
 
-#: windows/create_new.py:24
-msgid "name:"
+#: windows/compare_select.py:34 windows/device_check.py:76
+#: windows/device_compare.py:66 windows/device_infos.py:29
+msgid "Go Back"
 msgstr ""
 
-#: windows/create_new.py:30
-msgid "Submit"
+#: windows/compare_select.py:59
+msgid "Please select at least one set of test data"
 msgstr ""
 
-#: windows/create_new.py:33 windows/device_infos.py:30
-#: windows/device_select.py:35
-msgid "Cancel"
-msgstr ""
-
-#: windows/create_new.py:60 windows/create_new.py:65 windows/device_show.py:107
-#: windows/device_show.py:115 windows/device_show.py:123
-#: windows/device_show.py:134
+#: windows/compare_select.py:75 windows/create_new.py:85
+#: windows/device_check.py:113 windows/ui.py:64 windows/ui.py:70
 msgid "Message"
 msgstr ""
 
-#: windows/create_new.py:60
-msgid "You need to input a name!"
+#: windows/create_new.py:23
+msgid "Create New Device"
 msgstr ""
 
-#: windows/create_new.py:65
-msgid "This name has been used. Pleas input another!"
-msgstr ""
-
-#: windows/device_infos.py:22
-msgid "Device Info List"
-msgstr ""
-
-#: windows/device_infos.py:27
-msgid "Remove"
-msgstr ""
-
-#: windows/device_select.py:21
-msgid "Device Select"
-msgstr ""
-
-#: windows/device_select.py:26
-msgid "Select"
-msgstr ""
-
-#: windows/device_select.py:29
-msgid "Delete"
-msgstr ""
-
-#: windows/device_select.py:32
-msgid "Create"
-msgstr ""
-
-#: windows/device_show.py:26
-msgid "Device Detail"
-msgstr ""
-
-#: windows/device_show.py:33
+#: windows/create_new.py:27 windows/device_check.py:85
+#: windows/device_compare.py:75 windows/save_info.py:27
 msgid "Name:"
 msgstr ""
 
-#: windows/device_show.py:39
-msgid "Health:"
+#: windows/create_new.py:32
+msgid "Max I(A):"
 msgstr ""
 
-#: windows/device_show.py:48
-msgid "Select Device"
+#: windows/create_new.py:37 windows/save_info.py:32
+msgid "Submit"
 msgstr ""
 
-#: windows/device_show.py:52
+#: windows/create_new.py:40 windows/save_info.py:35
+msgid "Cancel"
+msgstr ""
+
+#: windows/create_new.py:62 windows/save_info.py:59
+msgid "You need to input a name!"
+msgstr ""
+
+#: windows/create_new.py:64
+msgid "This name has been used. Pleas input another!"
+msgstr ""
+
+#: windows/create_new.py:71
+msgid "Max current must be a number!"
+msgstr ""
+
+#: windows/create_new.py:73
+msgid "Max current must more than 0!"
+msgstr ""
+
+#: windows/device_check.py:27
+msgid "No device info!"
+msgstr ""
+
+#: windows/device_check.py:65
 msgid "Get New Device Info"
 msgstr ""
 
-#: windows/device_show.py:56
-msgid "Delete Line"
+#: windows/device_check.py:70
+msgid "Save Info"
 msgstr ""
 
-#: windows/device_show.py:60
-msgid "Exit"
+#: windows/device_check.py:91
+msgid "Max current value:"
 msgstr ""
 
-#: windows/device_show.py:107 windows/device_show.py:123
+#: windows/device_check.py:97
+msgid "Max time:"
+msgstr ""
+
+#: windows/device_check.py:113
 msgid "Data source error"
 msgstr ""
 
-#: windows/device_show.py:115 windows/device_show.py:134
-msgid "You need to select device!"
+#: windows/device_check.py:119
+msgid "Error"
 msgstr ""
 
-#: windows/device_show.py:150
+#: windows/device_check.py:119
+msgid "Unknow Error"
+msgstr ""
+
+#: windows/device_check.py:147
 #, python-format
-msgid "Device: %s"
+msgid "%s ms"
+msgstr ""
+
+#: windows/device_check.py:149
+#, python-format
+msgid "%s A"
+msgstr ""
+
+#: windows/device_compare.py:79
+msgid "dt:"
+msgstr ""
+
+#: windows/device_infos.py:26
+msgid "Remove"
+msgstr ""
+
+#: windows/device_infos.py:58 windows/device_select.py:120
+msgid "Are you sure to delete it?"
+msgstr ""
+
+#: windows/device_infos.py:66
+msgid "Info not selected"
+msgstr ""
+
+#: windows/device_select.py:18 windows/logo.py:18
+msgid "No device selected!"
+msgstr ""
+
+#: windows/device_select.py:31
+msgid "Start the test"
+msgstr ""
+
+#: windows/device_select.py:35
+msgid "Analysis of test data"
+msgstr ""
+
+#: windows/device_select.py:39
+msgid "New test equipment"
+msgstr ""
+
+#: windows/device_select.py:43
+msgid "Management test data"
+msgstr ""
+
+#: windows/device_select.py:47
+msgid "Remove test equipment"
+msgstr ""
+
+#: windows/device_select.py:51
+msgid "Exit System"
+msgstr ""
+
+#: windows/logo.py:25
+msgid "Excitation Winding Inter-turn Short Circuit Test"
+msgstr ""
+
+#: windows/logo.py:29
+msgid "Login In"
+msgstr ""
+
+#: windows/save_info.py:23
+msgid "Save Device info"
+msgstr ""
+
+#: windows/save_info.py:62
+msgid "Please inpute another name"
 msgstr ""

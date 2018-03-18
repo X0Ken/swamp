@@ -32,7 +32,7 @@ def convert_args(args):
         if '=' not in arg:
             continue
         k, v = arg.split('=', 1)
-        kwargs[k] = v
+        kwargs[k] = v.strip()
     return kwargs
 
 

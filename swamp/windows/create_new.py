@@ -7,30 +7,31 @@ from swamp import exception
 from swamp import log
 from swamp import models
 from swamp.utils import _
-from swamp.windows.ui import BigPushButton
-from swamp.windows.ui import SwitchWindowsBase
+from swamp.windows.ui import BigPushButton, BigLabel, BigLineEdit
+from swamp.windows.ui import EditWindowsBase
 
 logger = log.get_logger()
 
 
-class Window(SwitchWindowsBase):
+class CreateNewWindow(EditWindowsBase):
     name = None
     max_time = None
     keyboard = None
+    full_window = False
 
     def __init__(self, parent=None):
-        super(Window, self).__init__(parent)
+        super(CreateNewWindow, self).__init__(parent)
         self.setWindowTitle(_("Create New Device"))
 
         grid = QtGui.QGridLayout()
 
-        name_label = QtGui.QLabel(_("Name:"))
-        self.name = QtGui.QLineEdit()
+        name_label = BigLabel(_("Name:"))
+        self.name = BigLineEdit()
         grid.addWidget(name_label, 0, 0)
         grid.addWidget(self.name, 0, 1)
 
-        max_current_label = QtGui.QLabel(_("Max I(A):"))
-        self.max_current = QtGui.QLineEdit()
+        max_current_label = BigLabel(_("Max I(A):"))
+        self.max_current = BigLineEdit()
         grid.addWidget(max_current_label, 1, 0)
         grid.addWidget(self.max_current, 1, 1)
 

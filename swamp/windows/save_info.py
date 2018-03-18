@@ -7,14 +7,15 @@ from swamp import exception
 from swamp import log
 from swamp import models
 from swamp.utils import _
-from swamp.windows.ui import BigPushButton, warring
-from swamp.windows.ui import SwitchWindowsBase
+from swamp.windows.ui import BigPushButton, warring, BigLabel, BigLineEdit
+from swamp.windows.ui import EditWindowsBase
 
 logger = log.get_logger()
 
 
-class SaveDeviceInfoWindow(SwitchWindowsBase):
+class SaveDeviceInfoWindow(EditWindowsBase):
     _info = None
+    full_window = False
     keyboard = None
 
     def __init__(self, parent=None, info=None):
@@ -24,8 +25,8 @@ class SaveDeviceInfoWindow(SwitchWindowsBase):
 
         grid = QtGui.QGridLayout()
 
-        name_label = QtGui.QLabel(_("Name:"))
-        self.name = QtGui.QLineEdit()
+        name_label = BigLabel(_("Name:"))
+        self.name = BigLineEdit()
         grid.addWidget(name_label, 0, 0)
         grid.addWidget(self.name, 0, 1)
 
