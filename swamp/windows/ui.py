@@ -1,7 +1,13 @@
+import subprocess
+
 from PyQt4 import QtGui
 from PyQt4.QtGui import QMessageBox
 
 from swamp.utils import _
+from swamp import log
+
+
+logger = log.get_logger()
 
 
 class WindowsBase(QtGui.QDialog):
@@ -29,8 +35,26 @@ class EditWindowsBase(WindowsBase):
         super(EditWindowsBase, self).__init__(*args, **kwargs)
         screen = QtGui.QDesktopWidget().screenGeometry()
         size = self.geometry()
-        self.move(170,
-                  (screen.height() - size.height()) / 2)
+        self.move(170, (screen.height() - size.height()) / 2)
+        
+        try:
+            logger.debug("run matchbox-keyboard")
+            self.keyboard = subprocess.Popen(['matchbox-keyboard',])
+        except Exception as e:
+            logger.warning(e)
+
+    def closeEvent(self, evnt):
+        self.close()
+    
+    def close(self):
+        logger.debug("kill matchbox-keyboard")
+        self.close_keyboard()
+        super(EditWindowsBase, self).close()
+
+    def close_keyboard(self):
+        if self.keyboard:
+            self.keyboard.kill()
+            self.keyboard = None
 
 
 class BigLabel(QtGui.QLabel):

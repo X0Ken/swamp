@@ -47,12 +47,6 @@ class SaveDeviceInfoWindow(EditWindowsBase):
 
         self.setLayout(vbox)
 
-        try:
-            logger.debug("run matchbox-keyboard")
-            self.keyboard = subprocess.Popen(['matchbox-keyboard',])
-        except Exception as e:
-            logger.warning(e)
-
     def select_clicked(self):
         logger.debug("Device info save button clicked")
         name = unicode(self.name.text())
@@ -69,14 +63,3 @@ class SaveDeviceInfoWindow(EditWindowsBase):
         win.go_home()
         self.accept()
 
-    def close(self):
-        self.close_keyboard()
-        win = self.parent()
-        win.go_home()
-        self.accept()
-
-    def close_keyboard(self):
-        logger.debug("kill matchbox-keyboard")
-        if self.keyboard:
-            self.keyboard.kill()
-            self.keyboard = None

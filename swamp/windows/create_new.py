@@ -1,5 +1,3 @@
-import subprocess
-
 from PyQt4 import QtGui
 from PyQt4.QtGui import QMessageBox
 
@@ -52,12 +50,6 @@ class CreateNewWindow(EditWindowsBase):
 
         self.setLayout(vbox)
 
-        try:
-            logger.debug("run matchbox-keyboard")
-            self.keyboard = subprocess.Popen(['matchbox-keyboard',])
-        except Exception as e:
-            logger.warning(e)
-
     def check_name(self, name):
         if not name:
             raise exception.InvalidError(_("You need to input a name!"))
@@ -98,15 +90,3 @@ class CreateNewWindow(EditWindowsBase):
         win.go_home()
         self.close_keyboard()
         self.accept()
-
-    def close(self):
-        logger.debug("kill matchbox-keyboard")
-        self.close_keyboard()
-        win = self.parent()
-        win.go_home()
-        self.accept()
-
-    def close_keyboard(self):
-        if self.keyboard:
-            self.keyboard.kill()
-            self.keyboard = None
