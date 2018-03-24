@@ -5,8 +5,7 @@ from swamp.windows.create_new import CreateNewWindow as CreateWindow
 from swamp.windows.device_check import DeviceCheck
 from swamp.windows.device_compare import DeviceCompare
 from swamp.windows.device_infos import DeviceInfos
-from swamp.windows.device_select import DeviceSelectWindow
-from swamp.windows.logo import LogoWindow
+from swamp.windows.device_select import MenuWindow
 from swamp.windows.save_info import SaveDeviceInfoWindow
 
 
@@ -17,7 +16,7 @@ class WindowsSwitch(QtGui.QDialog):
 
     def __init__(self):
         super(WindowsSwitch, self).__init__()
-        self.next_win = LogoWindow
+        self.next_win = MenuWindow
         self.kwargs = {}
 
     def run(self):
@@ -26,7 +25,7 @@ class WindowsSwitch(QtGui.QDialog):
             self.running = win.exec_()
 
     def go_home(self):
-        self.next_win = DeviceSelectWindow
+        self.next_win = MenuWindow
         self.kwargs = {}
 
     def go_device_check(self, device):

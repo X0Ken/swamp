@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-03-18 22:47+0800\n"
+"POT-Creation-Date: 2018-03-24 21:29+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,57 +17,62 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: windows/compare_select.py:30
+#: windows/compare_select.py:20
+msgid "Select Device info"
+msgstr "选择试验结果"
+
+#: windows/compare_select.py:31
 msgid "Compate Infos"
 msgstr "信息比较"
 
-#: windows/compare_select.py:34 windows/device_check.py:77
+#: windows/compare_select.py:35 windows/device_check.py:77
 #: windows/device_compare.py:70 windows/device_infos.py:32
 msgid "Go Back"
 msgstr "返回"
 
-#: windows/compare_select.py:59
+#: windows/compare_select.py:60
 msgid "Please select at least one set of test data"
 msgstr "请至少选择一组试验数据"
 
-#: windows/compare_select.py:75 windows/create_new.py:86
-#: windows/device_check.py:120 windows/ui.py:85 windows/ui.py:91
+#: windows/compare_select.py:76 windows/create_new.py:78
+#: windows/device_check.py:120 windows/ui.py:115 windows/ui.py:121
 msgid "Message"
 msgstr "消息"
 
-#: windows/create_new.py:24
+#: windows/create_new.py:22
 msgid "Create New Device"
 msgstr "创建新的设备"
 
-#: windows/create_new.py:28 windows/device_check.py:86 windows/save_info.py:28
+#: windows/create_new.py:26 windows/device_check.py:86 windows/save_info.py:28
 msgid "Name:"
 msgstr "名字："
 
-#: windows/create_new.py:33
+#: windows/create_new.py:31
 msgid "Max I(A):"
 msgstr "最大励磁电流值（A）："
 
-#: windows/create_new.py:38 windows/save_info.py:33
+#: windows/create_new.py:36 windows/save_info.py:33
 msgid "Submit"
-msgstr "提交"
+msgstr "确认"
 
-#: windows/create_new.py:41 windows/save_info.py:36
+#: windows/create_new.py:39 windows/device_select.py:155
+#: windows/save_info.py:36
 msgid "Cancel"
 msgstr "取消"
 
-#: windows/create_new.py:63 windows/save_info.py:60
+#: windows/create_new.py:55 windows/save_info.py:54
 msgid "You need to input a name!"
 msgstr "你需要输入一个名字！"
 
-#: windows/create_new.py:65
+#: windows/create_new.py:57
 msgid "This name has been used. Pleas input another!"
 msgstr "这个名字已经被使用了，请换一个"
 
-#: windows/create_new.py:72
+#: windows/create_new.py:64
 msgid "Max current must be a number!"
 msgstr "最大励磁电流必须是一个数字！"
 
-#: windows/create_new.py:74
+#: windows/create_new.py:66
 msgid "Max current must more than 0!"
 msgstr "最大励磁电流必须大于0！"
 
@@ -133,7 +138,7 @@ msgstr "查看"
 msgid "Remove"
 msgstr "移除"
 
-#: windows/device_infos.py:63 windows/device_select.py:127
+#: windows/device_infos.py:63 windows/device_select.py:125
 msgid "Are you sure to delete it?"
 msgstr "你确认要删除它吗？"
 
@@ -141,50 +146,54 @@ msgstr "你确认要删除它吗？"
 msgid "Info not selected"
 msgstr "没有选择任何信息"
 
-#: windows/device_select.py:21 windows/logo.py:19
+#: windows/device_select.py:25
 msgid "No device selected!"
 msgstr "没有选择任何设备"
 
-#: windows/device_select.py:34
+#: windows/device_select.py:42
 msgid "Start the test"
 msgstr "开始试验"
 
-#: windows/device_select.py:38
+#: windows/device_select.py:46
 msgid "New test equipment"
-msgstr "新建试验设备"
+msgstr "添加试验设备"
 
-#: windows/device_select.py:42
+#: windows/device_select.py:50
 msgid "Remove test equipment"
 msgstr "删除试验设备"
 
-#: windows/device_select.py:46
+#: windows/device_select.py:54
 msgid "Analysis of test data"
-msgstr "分析试验数据"
+msgstr "试验数据分析"
 
-#: windows/device_select.py:50
+#: windows/device_select.py:58
 msgid "Management test data"
-msgstr "管理试验数据"
+msgstr "试验数据管理"
 
-#: windows/device_select.py:55
+#: windows/device_select.py:63
 msgid "Power Off"
 msgstr "关机"
 
-#: windows/device_select.py:59
+#: windows/device_select.py:67
 msgid "Exit System"
 msgstr "退出系统"
 
-#: windows/logo.py:28
-msgid "Excitation Winding Inter-turn Short Circuit Test"
-msgstr "励磁绕组匝间短路试验"
+#: windows/device_select.py:132
+msgid "Are you sure to power off?"
+msgstr "你确定要关机？"
 
-#: windows/logo.py:36
-msgid "Start"
-msgstr "开始"
+#: windows/device_select.py:143
+msgid "Select Device"
+msgstr "选择设备"
+
+#: windows/device_select.py:151
+msgid "Select"
+msgstr "选择"
 
 #: windows/save_info.py:24
 msgid "Save Device info"
 msgstr "保存设备信息"
 
-#: windows/save_info.py:63
+#: windows/save_info.py:57
 msgid "Please inpute another name"
 msgstr "请输入一个其他的名字"

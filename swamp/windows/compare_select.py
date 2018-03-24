@@ -12,20 +12,21 @@ from swamp.windows.ui import WindowsBase
 logger = log.get_logger()
 
 
-class CompareSelectWindow(WindowsBase):
+class CompareSelectWindow(QtGui.QDialog):
     device = None
 
     def __init__(self, parent=None, device=None):
         super(CompareSelectWindow, self).__init__(parent)
+        self.setWindowTitle(_("Select Device info"))
         self.device = device
-        layout = QtGui.QHBoxLayout()
+        layout = QtGui.QVBoxLayout()
 
         info_list_widget = ListWidget()
         info_list_widget.setSelectionMode(QAbstractItemView.MultiSelection)
         layout.addWidget(info_list_widget)
         self.info_list_widget = info_list_widget
 
-        btns = QtGui.QVBoxLayout()
+        btns = QtGui.QHBoxLayout()
 
         compare_btn = BigPushButton(_('Compate Infos'))
         compare_btn.clicked.connect(self._on_compare_click)
@@ -59,7 +60,7 @@ class CompareSelectWindow(WindowsBase):
             self._warrning_no_info(_("Please select at least one set of "
                                      "test data"))
         win = self.parent()
-        win.go_compare_device(self.device, infos)
+        win.infos = infos
         self.accept()
 
     def _get_select_infos(self, list_widget):

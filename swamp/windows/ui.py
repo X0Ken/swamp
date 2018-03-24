@@ -63,6 +63,12 @@ class BigLabel(QtGui.QLabel):
         self.setStyleSheet('QLabel {font-size: 30pt;}')
 
 
+class MiddleLabel(QtGui.QLabel):
+    def __init__(self, *args, **kwargs):
+        super(MiddleLabel, self).__init__(*args, **kwargs)
+        self.setStyleSheet('QLabel {font-size: 16pt;}')
+
+
 class BigLineEdit(QtGui.QLineEdit):
     def __init__(self, *args, **kwargs):
         super(BigLineEdit, self).__init__(*args, **kwargs)
@@ -101,7 +107,7 @@ class InfoListWidgetItem(QtGui.QListWidgetItem):
 class ListWidget(QtGui.QListWidget):
     def __init__(self, *args, **kwargs):
         super(ListWidget, self).__init__(*args, **kwargs)
-        self.setStyleSheet('QListWidget {font-size: 18pt;}')
+        self.setStyleSheet('QListWidget {font-size: 25pt;}')
 
 
 def warring(parent, msg):

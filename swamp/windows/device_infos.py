@@ -12,7 +12,7 @@ from swamp.windows.ui import warring
 logger = log.get_logger()
 
 
-class DeviceInfos(WindowsBase):
+class DeviceInfos(QtGui.QDialog):
     device = None
     infos = None
 
@@ -78,7 +78,7 @@ class DeviceInfos(WindowsBase):
             logger.info("View info %s from device %s",
                         str(info), self.device.name)
             win = self.parent()
-            win.go_compare_device(self.device, [info])
+            win.info = info
             self.accept()
         else:
             warring(self, _("Info not selected"))

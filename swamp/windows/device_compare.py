@@ -11,7 +11,7 @@ import matplotlib.pyplot as plt
 
 from swamp import log
 from swamp.utils import _
-from swamp.windows.ui import BigPushButton, BigLabel
+from swamp.windows.ui import BigPushButton, BigLabel, MiddleLabel
 from swamp.windows.ui import WindowsBase
 
 logger = log.get_logger()
@@ -76,21 +76,21 @@ class DeviceCompare(WindowsBase):
     def init_info_area(self):
         # label grid
         label_grid = QtGui.QGridLayout()
-        name_lable = BigLabel(_("Device Name:"))
-        device_name = BigLabel("")
+        name_lable = MiddleLabel(_("Device Name:"))
+        device_name = MiddleLabel("")
         self.device_name = device_name
         label_grid.addWidget(name_lable, 0, 0)
         label_grid.addWidget(device_name, 0, 1)
 
         if len(self.infos) > 1:
-            t_lable = BigLabel(_("dt:"))
-            t_value = BigLabel("")
+            t_lable = MiddleLabel(_("dt:"))
+            t_value = MiddleLabel("")
             label_grid.addWidget(t_lable, 1, 0)
             label_grid.addWidget(t_value, 1, 1)
             self.t_value = t_value
         else:
-            tname_lable = BigLabel(_("Test Name:"))
-            tname_value = BigLabel(self.infos[0].name)
+            tname_lable = MiddleLabel(_("Test Name:"))
+            tname_value = MiddleLabel(self.infos[0].name)
             label_grid.addWidget(tname_lable, 1, 0)
             label_grid.addWidget(tname_value, 1, 1)
 

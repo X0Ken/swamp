@@ -15,7 +15,7 @@ from swamp import log
 from swamp import models
 from swamp.utils import _
 from swamp.windows.asyncio import coroutine, AsyncTask
-from swamp.windows.ui import BigPushButton, BigLabel
+from swamp.windows.ui import BigPushButton, BigLabel, MiddleLabel
 from swamp.windows.ui import WindowsBase
 from swamp.windows.ui import warring
 
@@ -83,20 +83,20 @@ class DeviceCheck(WindowsBase):
     def init_info_area(self):
         # label grid
         label_grid = QtGui.QGridLayout()
-        name_lable = BigLabel(_("Name:"))
-        device_name = BigLabel("")
+        name_lable = MiddleLabel(_("Name:"))
+        device_name = MiddleLabel("")
         label_grid.addWidget(name_lable, 0, 0)
         label_grid.addWidget(device_name, 0, 1)
         self.device_name = device_name
 
-        max_current_label = BigLabel(_("Max current value:"))
-        max_current = BigLabel("")
+        max_current_label = MiddleLabel(_("Max current value:"))
+        max_current = MiddleLabel("")
         label_grid.addWidget(max_current_label, 2, 0)
         label_grid.addWidget(max_current, 2, 1)
         self.max_current = max_current
 
-        max_time_label = BigLabel(_("Max time:"))
-        max_time = BigLabel("")
+        max_time_label = MiddleLabel(_("Max time:"))
+        max_time = MiddleLabel("")
         label_grid.addWidget(max_time_label, 3, 0)
         label_grid.addWidget(max_time, 3, 1)
         self.max_time = max_time

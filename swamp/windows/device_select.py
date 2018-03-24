@@ -1,4 +1,5 @@
 import subprocess
+import os
 
 from PyQt4 import QtGui
 
@@ -6,6 +7,8 @@ from swamp import log
 from swamp.models import Device
 from swamp.utils import CONF
 from swamp.utils import _
+from swamp.windows.compare_select import CompareSelectWindow
+from swamp.windows.device_infos import DeviceInfos
 from swamp.windows.ui import BigPushButton, SuperButton
 from swamp.windows.ui import DeviceListWidgetItem
 from swamp.windows.ui import WindowsBase
@@ -16,17 +19,23 @@ from swamp.windows.ui import warring
 logger = log.get_logger()
 
 
-class DeviceSelectWindow(WindowsBase):
+class MenuWindow(WindowsBase):
+    devices = None
     with_out_close = False
     no_selected_err_msg = _('No device selected!')
 
     def __init__(self, parent=None):
-        super(DeviceSelectWindow, self).__init__(parent)
+        super(MenuWindow, self).__init__(parent)
         
         hbox = QtGui.QHBoxLayout()
-        list_widget = ListWidget()
-        hbox.addWidget(list_widget)
-        self.list_widget = list_widget
+
+        size = self.geometry()
+        pic = QtGui.QLabel()
+        pixmap = QtGui.QPixmap(os.getcwd() + "/img/logo.jpg")
+        logger.debug("Widows size: %d %d" % (size.width(), size.height()))
+        pixmap = pixmap.scaled(size.width() / 4 * 2.5 * 2, size.height() * 2)
+        pic.setPixmap(pixmap)
+        hbox.addWidget(pic)
 
         vbox = QtGui.QVBoxLayout()
 
@@ -61,6 +70,94 @@ class DeviceSelectWindow(WindowsBase):
 
         hbox.addLayout(vbox)
         self.setLayout(hbox)
+
+    def on_compare_device(self):
+        self.infos = None
+        win = self.parent()
+        device = self._get_select_device()
+        if device:
+            com_win = CompareSelectWindow(self, device)
+            com_win.exec_()
+        if self.infos:
+            win.go_compare_device(device, self.infos)
+            self.accept()
+
+    def _get_select_device(self):
+        select_win = DeviceSelectWindow(self)
+        select_win.exec_()
+        device = None
+        if self.devices:
+            device = self.devices[0].device
+            logger.debug("Select device %s" % device.name)
+        self.devices = None
+        return device
+
+    def on_check_clicked(self):
+        logger.debug("Select device button clicked")
+        win = self.parent()
+        device = self._get_select_device()
+        if device:
+            win.go_device_check(device)
+            self.accept()
+
+    def on_create_clicked(self):
+        logger.debug("Create new device button clicked")
+        win = self.parent()
+        win.go_create_device()
+        self.accept()
+
+    def on_manager_clicked(self):
+        logger.debug("Manager device button clicked")
+        self.info = None
+        device = self._get_select_device()
+        if device:
+            manager_win = DeviceInfos(self, device)
+            manager_win.exec_()
+        if self.info:
+            win = self.parent()
+            win.go_compare_device(device, [self.info])
+            self.accept()
+
+    def on_delete_clicked(self):
+        logger.debug("Delete device button clicked")
+        device = self._get_select_device()
+        if device:
+            if not ask(self, _("Are you sure to delete it?")):
+                return
+            logger.info("Delete device %s" % device.name)
+            device.destroy()
+            self.reload_device()
+
+    def on_power_off(self):
+        if not ask(self, _("Are you sure to power off?")):
+            return
+        self.close()
+        subprocess.Popen(['sudo', 'shutdown', "-t", "now"])
+
+
+class DeviceSelectWindow(QtGui.QDialog):
+    single = True
+
+    def __init__(self, parent=None, single=True):
+        super(DeviceSelectWindow, self).__init__(parent)
+        self.setWindowTitle(_("Select Device"))
+        self.single = single
+        vbox = QtGui.QVBoxLayout()
+        list_widget = ListWidget()
+        vbox.addWidget(list_widget)
+        self.list_widget = list_widget
+
+        hbox = QtGui.QHBoxLayout()
+        select_btn = BigPushButton(_('Select'))
+        select_btn.clicked.connect(self.select_clicked)
+        hbox.addWidget(select_btn)
+
+        cancel_btn = BigPushButton(_('Cancel'))
+        cancel_btn.clicked.connect(self.close)
+        hbox.addWidget(cancel_btn)
+
+        vbox.addLayout(hbox)
+        self.setLayout(vbox)
         self.reload_device()
 
     def reload_device(self):
@@ -76,62 +173,12 @@ class DeviceSelectWindow(WindowsBase):
         if item:
             item.setSelected(True)
 
-    def on_compare_device(self):
-        win = self.parent()
-        device = self._get_select_device()
-        if device:
-            win.go_compare_select(device)
-            self.accept()
-        else:
-            warring(self, self.no_selected_err_msg)
-
     def _get_select_device(self):
         devices = self.list_widget.selectedItems()
-        device = None
-        if devices:
-            device = devices[0].device
-            logger.debug("Select device %s" % device.name)
-        return device
+        self.parent().devices = devices
 
-    def on_check_clicked(self):
-        logger.debug("Select device button clicked")
-        win = self.parent()
-        device = self._get_select_device()
-        if device:
-            win.go_device_check(device)
-            self.accept()
-        else:
-            warring(self, self.no_selected_err_msg)
-
-    def on_create_clicked(self):
-        logger.debug("Create new device button clicked")
-        win = self.parent()
-        win.go_create_device()
+    def select_clicked(self):
+        logger.debug("Device select button clicked")
+        self._get_select_device()
         self.accept()
-
-    def on_manager_clicked(self):
-        logger.debug("Manager device button clicked")
-        device = self._get_select_device()
-        if device:
-            win = self.parent()
-            win.go_manager_device(device)
-            self.accept()
-        else:
-            warring(self, self.no_selected_err_msg)
-
-    def on_delete_clicked(self):
-        logger.debug("Delete device button clicked")
-        device = self._get_select_device()
-        if device:
-            if not ask(self, _("Are you sure to delete it?")):
-                return
-            logger.info("Delete device %s" % device.name)
-            device.destroy()
-            self.reload_device()
-        else:
-            warring(self, self.no_selected_err_msg)
-
-    def on_power_off(self):
-        self.close()
-        subprocess.Popen(['sudo', 'shutdown', "-t", "now"])
 
