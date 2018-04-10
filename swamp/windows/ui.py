@@ -1,5 +1,6 @@
 import subprocess
 
+from PyQt4 import QtCore
 from PyQt4 import QtGui
 from PyQt4.QtGui import QMessageBox
 
@@ -13,11 +14,17 @@ logger = log.get_logger()
 class WindowsBase(QtGui.QDialog):
     with_out_close = True
     full_window = True
+    center_window = False
 
     def __init__(self, *args, **kwargs):
         super(WindowsBase, self).__init__(*args, **kwargs)
+        self.setWindowFlags(QtCore.Qt.FramelessWindowHint | QtCore.Qt.Window)
         if self.full_window:
             self.showFullScreen()
+            # self.showMaximized()
+        if self.center_window:
+            self.center()
+
 
     def close(self):
         if self.with_out_close:
@@ -27,16 +34,25 @@ class WindowsBase(QtGui.QDialog):
         else:
             super(WindowsBase, self).close()
 
+    def center(self):
+        frameGm = self.frameGeometry()
+        screen = QtGui.QApplication.desktop().screenNumber(QtGui.QApplication.desktop().cursor().pos())
+        centerPoint = QtGui.QApplication.desktop().screenGeometry(screen).center()
+        frameGm.moveCenter(centerPoint)
+        self.move(frameGm.topLeft())
+
 
 class EditWindowsBase(WindowsBase):
     full_window = False
+    center_window = True
 
     def __init__(self, *args, **kwargs):
         super(EditWindowsBase, self).__init__(*args, **kwargs)
+        self.setWindowFlags(QtCore.Qt.FramelessWindowHint | QtCore.Qt.Window)
         screen = QtGui.QDesktopWidget().screenGeometry()
         size = self.geometry()
         self.move(170, (screen.height() - size.height()) / 2)
-        
+
         try:
             logger.debug("run matchbox-keyboard")
             self.keyboard = subprocess.Popen(['matchbox-keyboard',])
@@ -45,7 +61,7 @@ class EditWindowsBase(WindowsBase):
 
     def closeEvent(self, evnt):
         self.close()
-    
+
     def close(self):
         logger.debug("kill matchbox-keyboard")
         self.close_keyboard()
@@ -55,6 +71,35 @@ class EditWindowsBase(WindowsBase):
         if self.keyboard:
             self.keyboard.kill()
             self.keyboard = None
+
+
+class AskWindows(WindowsBase):
+    full_window = False
+    center_window = True
+    with_out_close = False
+
+    def __init__(self, msg=None, *args, **kwargs):
+        super(AskWindows, self).__init__(*args, **kwargs)
+
+        vbox = QtGui.QVBoxLayout()
+        msg_lab = MiddleLabel(msg)
+        vbox.addWidget(msg_lab)
+
+        select_btn = BigPushButton(_('Submit'))
+        select_btn.clicked.connect(self.select_clicked)
+
+        cancel_btn = BigPushButton(_('Cancel'))
+        cancel_btn.clicked.connect(self.close)
+
+        hbox = QtGui.QHBoxLayout()
+        hbox.addWidget(select_btn)
+        hbox.addWidget(cancel_btn)
+
+        vbox.addLayout(hbox)
+        self.setLayout(vbox)
+
+    def select_clicked(self):
+        self.accept()
 
 
 class BigLabel(QtGui.QLabel):
@@ -87,12 +132,19 @@ class BigPushButton(QtGui.QPushButton):
         self.setStyleSheet('QPushButton {font-size: 30pt;}')
 
 
+class MenuBigPushButton(QtGui.QPushButton):
+    def __init__(self, *args, **kwargs):
+        super(MenuBigPushButton, self).__init__(*args, **kwargs)
+        self.setStyleSheet('QPushButton {font-size: 30pt;'
+                           'padding: 30px 0px 30px 0px;}')
+
+
 class SuperButton(QtGui.QPushButton):
     def __init__(self, *args, **kwargs):
         super(SuperButton, self).__init__(*args, **kwargs)
         self.setStyleSheet('QPushButton {font-size: 30pt; '
                            'background-color: orange;'
-                           'padding: 1em 0em 1em 0em; '
+                           'padding: 1em 0em 1em 0em;'
                            'border-radius: 30px;}')
 
 
@@ -117,7 +169,7 @@ def warring(parent, msg):
 
 
 def ask(parent, msg):
-    ret = QMessageBox.warning(
-        parent, _('Message'), msg,
-        QMessageBox.Yes|QMessageBox.No, QMessageBox.No)
-    return ret == QMessageBox.Yes
+    askBox = AskWindows(msg=msg)
+    ret = askBox.exec_()
+    logger.debug("Select %s" % ret)
+    return ret

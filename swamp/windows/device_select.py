@@ -9,7 +9,9 @@ from swamp.utils import CONF
 from swamp.utils import _
 from swamp.windows.compare_select import CompareSelectWindow
 from swamp.windows.device_infos import DeviceInfos
-from swamp.windows.ui import BigPushButton, SuperButton
+from swamp.windows.ui import MenuBigPushButton
+from swamp.windows.ui import BigPushButton
+from swamp.windows.ui import SuperButton
 from swamp.windows.ui import DeviceListWidgetItem
 from swamp.windows.ui import WindowsBase
 from swamp.windows.ui import ListWidget
@@ -33,7 +35,7 @@ class MenuWindow(WindowsBase):
         pic = QtGui.QLabel()
         pixmap = QtGui.QPixmap(os.getcwd() + "/img/logo.jpg")
         logger.debug("Widows size: %d %d" % (size.width(), size.height()))
-        pixmap = pixmap.scaled(size.width() / 4 * 2.5 * 2, size.height() * 2)
+        pixmap = pixmap.scaled(size.width() / 4 * 2.5 * 2, size.height() * 2.4)
         pic.setPixmap(pixmap)
         hbox.addWidget(pic)
 
@@ -43,28 +45,28 @@ class MenuWindow(WindowsBase):
         select_btn.clicked.connect(self.on_check_clicked)
         vbox.addWidget(select_btn)
 
-        create_btn = BigPushButton(_('New test equipment'))
+        create_btn = MenuBigPushButton(_('New test equipment'))
         create_btn.clicked.connect(self.on_create_clicked)
         vbox.addWidget(create_btn)
 
-        delete_btn = BigPushButton(_('Remove test equipment'))
+        delete_btn = MenuBigPushButton(_('Remove test equipment'))
         delete_btn.clicked.connect(self.on_delete_clicked)
         vbox.addWidget(delete_btn)
 
-        compare_device_btn = BigPushButton(_('Analysis of test data'))
+        compare_device_btn = MenuBigPushButton(_('Analysis of test data'))
         compare_device_btn.clicked.connect(self.on_compare_device)
         vbox.addWidget(compare_device_btn)
 
-        manager_btn = BigPushButton(_('Management test data'))
+        manager_btn = MenuBigPushButton(_('Management test data'))
         manager_btn.clicked.connect(self.on_manager_clicked)
         vbox.addWidget(manager_btn)
 
         if not CONF.with_exit:
-            exit_btn = BigPushButton(_('Power Off'))
+            exit_btn = MenuBigPushButton(_('Power Off'))
             exit_btn.clicked.connect(self.on_power_off)
             vbox.addWidget(exit_btn)
         else:
-            exit_btn = BigPushButton(_('Exit System'))
+            exit_btn = MenuBigPushButton(_('Exit System'))
             exit_btn.clicked.connect(self.close)
             vbox.addWidget(exit_btn)
 
@@ -126,17 +128,21 @@ class MenuWindow(WindowsBase):
                 return
             logger.info("Delete device %s" % device.name)
             device.destroy()
-            self.reload_device()
 
     def on_power_off(self):
         if not ask(self, _("Are you sure to power off?")):
             return
         self.close()
+        # pcmanfm
+        subprocess.Popen(['killall', '-9', 'pcmanfm'])
         subprocess.Popen(['sudo', 'shutdown', "-t", "now"])
 
 
-class DeviceSelectWindow(QtGui.QDialog):
+class DeviceSelectWindow(WindowsBase):
     single = True
+    full_window = False
+    center_window = True
+    with_out_close = False
 
     def __init__(self, parent=None, single=True):
         super(DeviceSelectWindow, self).__init__(parent)

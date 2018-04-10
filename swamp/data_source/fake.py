@@ -12,6 +12,6 @@ class ADSource(ADSourceBase):
 
     def get_data(self, max_i=100, max_t=200):
         logger.info("FakeADSource get data")
-        high = random.randrange(20, max_i)
+        high = random.randrange(int(max_i * 3 / 4), max_i)
         return [(i, math.sin(math.pi / max_t * i / 2) * high)
                 for i in range(0, max_t, 5)]

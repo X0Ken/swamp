@@ -12,7 +12,10 @@ from swamp.windows.ui import warring
 logger = log.get_logger()
 
 
-class DeviceInfos(QtGui.QDialog):
+class DeviceInfos(WindowsBase):
+    with_out_close = False
+    full_window = False
+    center_window = True
     device = None
     infos = None
 

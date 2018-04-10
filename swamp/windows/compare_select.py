@@ -12,7 +12,10 @@ from swamp.windows.ui import WindowsBase
 logger = log.get_logger()
 
 
-class CompareSelectWindow(QtGui.QDialog):
+class CompareSelectWindow(WindowsBase):
+    with_out_close = False
+    full_window = False
+    center_window = True
     device = None
 
     def __init__(self, parent=None, device=None):
