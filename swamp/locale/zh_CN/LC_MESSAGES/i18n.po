@@ -81,8 +81,8 @@ msgid "No device info!"
 msgstr "没有设备信息"
 
 #: windows/device_check.py:66
-msgid "Get New Device Info"
-msgstr "获取设备信息"
+msgid "Start test"
+msgstr "开始试验"
 
 #: windows/device_check.py:71
 msgid "Save Info"

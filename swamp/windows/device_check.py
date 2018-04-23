@@ -63,7 +63,7 @@ class DeviceCheck(WindowsBase):
         # button grid begin
         btn_grid = QtGui.QVBoxLayout()
 
-        get_info_btn = BigPushButton(_('Get New Device Info'))
+        get_info_btn = BigPushButton(_('Start test'))
         get_info_btn.clicked.connect(self.check_btn_click)
         btn_grid.addWidget(get_info_btn)
         self.get_info_btn = get_info_btn
