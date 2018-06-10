@@ -10,6 +10,7 @@ import sys
 import time
 
 import serial
+import scipy.signal
 
 from swamp.data_source.base import ADSourceBase
 import swamp.log
@@ -96,7 +97,12 @@ class ADSource(ADSourceBase):
         self._send_cmd(max_i, max_t, ser)
         count = self._get_sum()
         results = self._get_datas(ser, count)
-        return results
+        # filter
+        results = list(scipy.signal.medfilt(results, 5))
+        res = []
+        for i in range(len(results)):
+            res.append((i * 1000 / 204, results[i]))
+        return res
 
     def _check_input(self, max_i, max_t):
         if max_i > 50 or max_i < 1:
@@ -127,7 +133,8 @@ class ADSource(ADSourceBase):
         results = []
         for i in xrange(count):
             r = self._get_one_data(ser)
-            results.append((i * 1000 / 204, r))
+            #results.append((i * 1000 / 204, r))
+            results.append(r)
         c = ser.read()
         if c != OK:
             raise Exception("Data format error")
@@ -158,6 +165,7 @@ class ADSource(ADSourceBase):
         r *= 256
         r |= ord(low_data)
         r = self.digital(r)
+        r -= 0.075
         return r
 
 
