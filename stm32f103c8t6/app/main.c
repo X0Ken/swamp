@@ -54,6 +54,41 @@ void checkout(int max_i, int max_t){
     out_datas(result, count);
 }
 
+void test_cmd(){
+  switch(Serial_Get()){
+    case 'p':
+      switch(Serial_Get()){
+      case 'o':
+        power_switch(0);
+        break;
+      case 'c':
+        power_switch(1);
+        break;
+      default:
+        Serial_Send('e');
+        break;
+      }
+      break;
+    case 'r':
+      switch(Serial_Get()){
+      case 'o':
+        res_swtich(0);
+        break;
+      case 'c':
+        res_swtich(1);
+        break;
+      default:
+        Serial_Send('e');
+        break;
+      }
+      break;
+    default:
+      Serial_Send('e');
+      break;
+  }
+  Serial_Send('o');
+}
+
 int main()
 {
   char r[2];
@@ -91,6 +126,9 @@ int main()
               break;
           case 'o':
               Serial_Send('o');
+              break;
+          case 't':
+              test_cmd();
               break;
           default:
               Serial_Send('e');
