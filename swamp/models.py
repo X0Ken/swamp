@@ -165,7 +165,7 @@ class CheckInfo(Base, DBMixin):
         self.data = data
 
     def __str__(self):
-        return str(self.created_at)[:16]
+        return self.name
 
     @classmethod
     def get_new(cls, device_id, max_i, max_t):

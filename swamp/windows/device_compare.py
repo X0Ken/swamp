@@ -35,6 +35,7 @@ class DeviceCompare(WindowsBase):
             self._draw_info(info)
         if len(self.infos) > 1:
             self.calculator_t(infos)
+        self.ax.legend()
         self.canvas.draw()
 
     def calculator_t(self, infos):

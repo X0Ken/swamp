@@ -130,8 +130,7 @@ class DeviceCheck(WindowsBase):
         data = json.loads(info.data)
         self.figure.clear()
         ax = self.figure.add_subplot(111)
-        ax.plot([t for t, v in data], [v for t, v in data],
-                     '.-', label=str(info))
+        ax.plot([t for t, v in data], [v for t, v in data], '.-')
         self.canvas.draw()
         self._info = info
         self.get_info_btn.setDisabled(False)
