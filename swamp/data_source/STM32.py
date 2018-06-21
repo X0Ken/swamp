@@ -10,7 +10,7 @@ import sys
 import time
 
 import serial
-import scipy.signal
+# import scipy.signal
 
 from swamp.data_source.base import ADSourceBase
 import swamp.log
@@ -98,7 +98,7 @@ class ADSource(ADSourceBase):
         count = self._get_sum()
         results = self._get_datas(ser, count)
         # filter
-        results = list(scipy.signal.medfilt(results, 5))
+        # results = list(scipy.signal.medfilt(results, 5))
         res = []
         for i in range(len(results)):
             res.append((i * 1000 / 204, results[i]))
