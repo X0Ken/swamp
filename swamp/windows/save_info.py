@@ -53,7 +53,7 @@ class SaveDeviceInfoWindow(EditWindowsBase):
         if not name:
             warring(self, _("You need to input a name!"))
             return
-        if self._info.name_exist(name):
+        if CheckInfo.name_exist(self._info.device_id, name):
             warring(self, _("Please inpute another name"))
             return
         self._info.name = name

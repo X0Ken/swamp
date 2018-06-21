@@ -183,6 +183,6 @@ class CheckInfo(Base, DBMixin):
         return session.query(cls).filter_by(device_id=device_id)
 
     @classmethod
-    def name_exist(cls, name):
+    def name_exist(cls, device_id, name):
         session = Session(DB().engine)
-        return session.query(cls).filter_by(name=name).all()
+        return session.query(cls).filter_by(device_id=device_id, name=name).all()
