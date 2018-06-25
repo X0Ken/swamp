@@ -11,13 +11,14 @@ import matplotlib.pyplot as plt
 
 from swamp import log
 from swamp.utils import _
-from swamp.windows.ui import BigPushButton, BigLabel, MiddleLabel
+from swamp.windows.ui import BigPushButton, BigLabel, MiddleLabel, \
+    FullWindowsBase
 from swamp.windows.ui import WindowsBase
 
 logger = log.get_logger()
 
 
-class DeviceCompare(WindowsBase):
+class DeviceCompare(FullWindowsBase):
     device = None
     infos = None
 

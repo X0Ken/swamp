@@ -3,6 +3,8 @@ import subprocess
 from PyQt4 import QtCore
 from PyQt4 import QtGui
 from PyQt4.QtGui import QMessageBox
+from PyQt4.QtGui import QStyle
+from PyQt4.QtCore import Qt
 
 from swamp.utils import _
 from swamp import log
@@ -13,18 +15,10 @@ logger = log.get_logger()
 
 class WindowsBase(QtGui.QDialog):
     with_out_close = True
-    full_window = True
-    center_window = False
 
     def __init__(self, *args, **kwargs):
         super(WindowsBase, self).__init__(*args, **kwargs)
         self.setWindowFlags(QtCore.Qt.FramelessWindowHint | QtCore.Qt.Window)
-        if self.full_window:
-            self.showFullScreen()
-            # self.showMaximized()
-        if self.center_window:
-            self.center()
-
 
     def close(self):
         if self.with_out_close:
@@ -34,25 +28,23 @@ class WindowsBase(QtGui.QDialog):
         else:
             super(WindowsBase, self).close()
 
-    def center(self):
-        frameGm = self.frameGeometry()
-        screen = QtGui.QApplication.desktop().screenNumber(QtGui.QApplication.desktop().cursor().pos())
-        centerPoint = QtGui.QApplication.desktop().screenGeometry(screen).center()
-        frameGm.moveCenter(centerPoint)
-        self.move(frameGm.topLeft())
+
+class FullWindowsBase(WindowsBase):
+    def __init__(self, *args, **kwargs):
+        super(WindowsBase, self).__init__(*args, **kwargs)
+        self.showFullScreen()
 
 
 class EditWindowsBase(WindowsBase):
-    full_window = False
-    center_window = True
 
     def __init__(self, *args, **kwargs):
         super(EditWindowsBase, self).__init__(*args, **kwargs)
-        self.setWindowFlags(QtCore.Qt.FramelessWindowHint | QtCore.Qt.Window)
-        screen = QtGui.QDesktopWidget().screenGeometry()
-        size = self.geometry()
-        self.move(170, (screen.height() - size.height()) / 2)
 
+    def showEvent(self, QShowEvent):
+        super(EditWindowsBase, self).showEvent(QShowEvent)
+        self.setGeometry(
+            QStyle.alignedRect(Qt.LeftToRight, Qt.AlignCenter, self.size(),
+                               QtGui.QDesktopWidget().availableGeometry()))
         try:
             logger.debug("run matchbox-keyboard")
             self.keyboard = subprocess.Popen(['matchbox-keyboard',])
@@ -71,11 +63,10 @@ class EditWindowsBase(WindowsBase):
         if self.keyboard:
             self.keyboard.kill()
             self.keyboard = None
+            subprocess.Popen(['killall', '-9', 'pcmanfm'])
 
 
 class AskWindows(WindowsBase):
-    full_window = False
-    center_window = True
     with_out_close = False
 
     def __init__(self, msg=None, *args, **kwargs):

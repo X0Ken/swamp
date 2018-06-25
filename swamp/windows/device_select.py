@@ -9,7 +9,7 @@ from swamp.utils import CONF
 from swamp.utils import _
 from swamp.windows.compare_select import CompareSelectWindow
 from swamp.windows.device_infos import DeviceInfos
-from swamp.windows.ui import MenuBigPushButton
+from swamp.windows.ui import MenuBigPushButton, FullWindowsBase
 from swamp.windows.ui import BigPushButton
 from swamp.windows.ui import SuperButton
 from swamp.windows.ui import DeviceListWidgetItem
@@ -21,7 +21,7 @@ from swamp.windows.ui import warring
 logger = log.get_logger()
 
 
-class MenuWindow(WindowsBase):
+class MenuWindow(FullWindowsBase):
     devices = None
     with_out_close = False
     no_selected_err_msg = _('No device selected!')
@@ -140,8 +140,6 @@ class MenuWindow(WindowsBase):
 
 class DeviceSelectWindow(WindowsBase):
     single = True
-    full_window = False
-    center_window = True
     with_out_close = False
 
     def __init__(self, parent=None, single=True):

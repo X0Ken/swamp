@@ -15,14 +15,15 @@ from swamp import log
 from swamp import models
 from swamp.utils import _
 from swamp.windows.asyncio import coroutine, AsyncTask
-from swamp.windows.ui import BigPushButton, BigLabel, MiddleLabel
+from swamp.windows.ui import BigPushButton, BigLabel, MiddleLabel, \
+    FullWindowsBase
 from swamp.windows.ui import WindowsBase
 from swamp.windows.ui import warring
 
 logger = log.get_logger()
 
 
-class DeviceCheck(WindowsBase):
+class DeviceCheck(FullWindowsBase):
     device = None
     _info = None
     no_selected_err_msg = _('No device info!')
@@ -144,7 +145,6 @@ class DeviceCheck(WindowsBase):
             self.accept()
         else:
             warring(self, self.no_selected_err_msg)
-
 
     def set_device(self):
         device = self.device

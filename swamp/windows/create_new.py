@@ -15,7 +15,6 @@ class CreateNewWindow(EditWindowsBase):
     name = None
     max_time = None
     keyboard = None
-    full_window = False
 
     def __init__(self, parent=None):
         super(CreateNewWindow, self).__init__(parent)

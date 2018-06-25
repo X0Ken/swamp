@@ -15,7 +15,6 @@ logger = log.get_logger()
 
 class SaveDeviceInfoWindow(EditWindowsBase):
     _info = None
-    full_window = False
     keyboard = None
 
     def __init__(self, parent=None, info=None):
